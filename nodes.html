@@ -18,12 +18,12 @@
   }
   .content {
     position: absolute;
-    background-color: rgb(67, 73, 66);
     color: #fff;
     width: 200px;
     padding: 30px;
     border: 1px solid #fff;
     border-radius: 10px;
+    box-shadow: 5px 5px 10px #000;
   }
   p {
     padding: 0;
@@ -32,16 +32,28 @@
     font-weight: 100;
   }
 
+  #content1 {
+    background-color: rgb(67, 73, 66);
+    top: 50px;
+    left: 50px;
+  }
+
   #content2 {
-    transform: translate(600px, 200px);
+    background-color: rgb(73, 69, 66);
+    top: 200px;
+    left: 600px;
   }
 
   #content3 {
-    transform: translate(700px, 600px);
+    background-color: rgb(66, 70, 73);
+    top: 500px;
+    left: 100px;
   }
 
   #content4 {
-    transform: translate(200px, 700px);
+    background-color: rgb(73, 66, 69);
+    top: 700px;
+    left: 200px;
   }
   .plug {
     position: absolute;
@@ -51,26 +63,66 @@
     background-color: #fff;
   }
 
-  .topleft {
+  .top-left {
     position: absolute;
+    border-top-left-radius: 10px;
     border-top: 1px solid #fff;
     border-left: 1px solid #fff;
   }
   
-  .topright {
+  .top-right {
     position: absolute;
+    border-top-right-radius: 10px;
     border-top: 1px solid #fff;
     border-right: 1px solid #fff;
   }
-  .bottomleft {
+  .bottom-left {
     position: absolute;
+    border-bottom-left-radius: 10px;
     border-bottom: 1px solid #fff;
     border-left: 1px solid #fff;
   }
-  .bottomright {
+  .bottom-right {
     position: absolute;
+    border-bottom-right-radius: 10px;
     border-bottom: 1px solid #fff;
     border-right: 1px solid #fff;
+  }
+
+  .arrow-up {
+    position: absolute;
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  }
+
+  .arrow-down {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #fff;
+  }
+
+  .arrow-right {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+  }
+
+  .arrow-left {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right:10px solid #fff; 
   }
 
   </style>
@@ -84,12 +136,13 @@
   </div>
 
   <div class="content" id="content3">
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptas autem aut architecto tempora quod perspiciatis, neque, itaque voluptatem corporis quaerat. Ex quaerat illum nemo distinctio ipsum vitae, eaque quisquam!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
   </div>
   <div class="content" id="content4">
-    <p>Dignissimos expedita sequi rem placeat debitis iure nam aut ratione deserunt, officia, quibusdam, iste tempore! In, dolorum. Possimus temporibus ratione sequi explicabo aliquam praesentium ullam nobis voluptates assumenda, maiores asperiores!</p>
+    <p>Dignissimos expedita sequi rem placeat debitis iure nam aut ratione deserunt, officia, quibusdam, iste tempore! In, dolorum.</p>
   </div>
 
   <script src="nodes.js"></script>
+  <script src="mouse_drag.js"></script>
 </body>
 </html>
