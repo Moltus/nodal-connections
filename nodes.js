@@ -2,6 +2,8 @@ const content1 = document.getElementById("content1");
 const content2 = document.getElementById("content2");
 const content3 = document.getElementById("content3");
 const content4 = document.getElementById("content4");
+const content5 = document.getElementById("content5");
+const content6 = document.getElementById("content6");
 
 function linkElements(element1, element2) {
   // declare connection origins positions for assigning them later
@@ -14,8 +16,8 @@ function linkElements(element1, element2) {
   console.log('elem1Info : ', elem1Info);
   let elem2Info = element2.getBoundingClientRect();
   console.log('elem2Info : ', elem2Info);
-  let elem1VMid = elem1Info.bottom - elem1Info.top;
-  let elem2VMid = elem2Info.bottom - elem2Info.top;
+  let elem1VMid = (elem1Info.bottom + elem1Info.top) / 2;
+  let elem2VMid = (elem2Info.bottom + elem2Info.top) / 2;
 
   if (elem1Info.left <= elem2Info.left) {
     // get X and Y positions for origins if elem1 is left of elem2
@@ -50,7 +52,7 @@ function linkElements(element1, element2) {
     createPlug(element2, plug2_posX, plug2_posY);
   } else {
     // get X and Y positions for origins if elem1 is right of elem2
-    plug1_posX = element1.clientLeft;
+    plug1_posX = element1.clientLeft - 1;
     plug1_posY = element1.clientTop + element1.clientHeight / 2;
     plug2_posX = element2.clientLeft + element2.clientWidth;
     plug2_posY = element2.clientTop + element2.clientHeight / 2;
@@ -59,7 +61,8 @@ function linkElements(element1, element2) {
     if (elem1Info.top >= elem2Info.top) {
       // create links
       width = elem1Info.left - elem2Info.right + 2;
-      height = elem2Info.top - elem1Info.top;
+      console.log('element 1: ', element1, 'element2 : ', element2, 'width : ', width);
+      height = elem1VMid - elem2VMid;
       createLinks(element1, 'bottom-left',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'top-right',
@@ -69,7 +72,7 @@ function linkElements(element1, element2) {
     } else {
       // create links
       width = elem1Info.left - elem2Info.right + 2;
-      height = elem1Info.top - elem2Info.top;
+      height = elem2VMid - elem1VMid;
       createLinks(element1, 'top-left',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'bottom-right',
@@ -78,8 +81,8 @@ function linkElements(element1, element2) {
         plug1_posY + height / 2, 'down');
     }
     // create plugs after so they appear on top
-    createPlug(element1, 'right');
-    createPlug(element2, 'left');
+    createPlug(element1, plug1_posX, plug1_posY);
+    createPlug(element2, plug2_posX, plug2_posY);
   }
 }
 
@@ -154,5 +157,6 @@ linkElements(content1, content2);
 linkElements(content3, content2);
 linkElements(content4, content2);
 linkElements(content2, content5);
-// linkElements(content6, content2);
+linkElements(content6, content2);
+linkElements(content4, content5);
 
