@@ -14,7 +14,8 @@ function linkElements(element1, element2) {
   console.log('elem1Info : ', elem1Info);
   let elem2Info = element2.getBoundingClientRect();
   console.log('elem2Info : ', elem2Info);
-  let elem1 
+  let elem1VMid = elem1Info.bottom - elem1Info.top;
+  let elem2VMid = elem2Info.bottom - elem2Info.top;
 
   if (elem1Info.left <= elem2Info.left) {
     // get X and Y positions for origins if elem1 is left of elem2
@@ -28,7 +29,7 @@ function linkElements(element1, element2) {
     if (elem1Info.top >= elem2Info.top) {
       // create links
       width = elem2Info.left - elem1Info.right + 2;
-      height = elem1Info.top - elem2Info.top;
+      height = elem1VMid - elem2VMid;
       createLinks(element1, 'bottom-right', plug1_posX, plug1_posY, width, height);
       createLinks(element2, 'top-left', plug2_posX, plug2_posY, width, height);
       createArrow(element1, plug1_posX + width / 2,
@@ -36,7 +37,7 @@ function linkElements(element1, element2) {
     } else {
       // create links
       width = elem2Info.left - elem1Info.right + 2;
-      height = elem2Info.top - elem1Info.top;
+      height = elem2VMid - elem1VMid;
       createLinks(element1, 'top-right',
         plug1_posX, plug1_posY, width, height);
       createLinks(element2, 'bottom-left',
