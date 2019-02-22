@@ -17,21 +17,20 @@ function linkElements(element1, element2) {
     createPlug(element1, plug1_posX, plug1_posY);
     createPlug(element2, plug2_posX, plug2_posY);
 
-    console.log('les positions x,y :', plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-
     if (plug1_posY >= plug2_posY) {
-      console.log('les positions x,y après :', plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       // create links
-      createLinks(element1, 'topLeft',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-      createLinks(element2, 'bottomRight',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+      width = element2.getBoundingClientRect().left - element1.getBoundingClientRect().right;
+      height = element2.getBoundingClientRect().top - element1.getBoundingClientRect().top;
+      createLinks(element1, 'topLeft', plug1_posX, plug1_posY, width, height);
+      createLinks(element2, 'bottomRight', plug2_posX, plug2_posY, width, height);
     } else {
       // create links
+      width = element2.getBoundingClientRect().left - element1.getBoundingClientRect().right;
+      height = element1.getBoundingClientRect().top - element2.getBoundingClientRect().top;
       createLinks(element1, 'bottomLeft',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+        plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'topRight',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+        plug1_posX, plug1_posY, plug2_posX, plug2_posY);
     }
   } else {
     // get X and Y positions for origins if elem1 is right of elem2
@@ -45,16 +44,20 @@ function linkElements(element1, element2) {
 
     if (plug1_posY >= plug2_posY) {
       // create links
+      width = element1.getBoundingClientRect().left - element2.getBoundingClientRect().right;
+      height = element2.getBoundingClientRect().top - element1.getBoundingClientRect().top;
       createLinks(element1, 'topRight',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+        plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'bottomLeft',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+        plug1_posX, plug1_posY, plug2_posX, plug2_posY);
     } else {
       // create links
+      width = element1.getBoundingClientRect().left - element2.getBoundingClientRect().right;
+      height = element1.getBoundingClientRect().top - element2.getBoundingClientRect().top;
       createLinks(element1, 'bottomRight',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+        plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'topLeft',
-      plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+        plug1_posX, plug1_posY, plug2_posX, plug2_posY);
     }
   }
 }
@@ -68,24 +71,36 @@ function createPlug(element, x, y) {
   plug.style.top = y - 6 + 'px';
 }
 
-function createLinks(element, direction, plug1_X, plug1_Y, plug2_X, plug2_Y) {
-  console.log('creating links', element, direction, plug1_X, plug1_Y, plug2_X, plug2_Y);
-  let height;
-  let width;
-  let link1 = document.createElement('div');
-  element.appendChild(link1);
-  let link2 = document.createElement('div');
-  element.appendChild(link2);
+function createLinks(element, direction, plugX, plugY, width, height) {
+  console.log('arguments : ', element, direction, plugX, plugY, width, height);
+  let link = document.createElement('div');
+  element.appendChild(link);
+
   if (direction === 'topLeft') {
-    height = plug1_Y - plug2_Y;
-    console.log('height: ', height);
-    width = plug2_X - plug1_X;
-    console.log('width ', width);
-    link1.className = 'topright';
-    link1.style.left = plug1_X + 'px';
-    link1.style.top = plug1_Y + 'px';
-    link1.style.width = width * .1 + 'px';
-    link1.style.height = height / 4 + 'px';
+    // link has opposite borders horizontally
+    link.className = 'topright';
+    link.style.left = plugX + 'px';
+    link.style.top = plugY + 'px';
+    link.style.width = width / 2 + 'px';
+    link.style.height = height / 2 + 'px';
+  } else if (direction === 'topRight') {
+    link.className = 'topleft';
+    link.style.left = plugX - width / 2 + 'px';
+    link.style.top = plugY + 'px';
+    link.style.width = width / 2 + 'px';
+    link.style.height = height / 2 + 'px'
+  } else if (direction === 'bottomLeft') {
+    link.className = 'bottomright';
+    link.style.left = plugX + 'px';
+    link.style.top = plugY - height / 2 + 'px';
+    link.style.width = width / 2 + 'px';
+    link.style.height = height / 2 + 'px';
+  } else if (direction === 'bottomRight') {
+    link.className = 'bottomleft';
+    link.style.left = plugX - width / 2 + 'px';
+    link.style.top = plugY - height / 2 + 'px';
+    link.style.width = width / 2 + 'px';
+    link.style.height = height / 2 + 'px'
   }
 
 }
@@ -93,3 +108,5 @@ function createLinks(element, direction, plug1_X, plug1_Y, plug2_X, plug2_Y) {
 
 linkElements(content1, content2);
 linkElements(content3, content4);
+
+console.log('MOU9AEZFROUIHAEFOIAEJF');
