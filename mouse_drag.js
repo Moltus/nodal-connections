@@ -21,7 +21,7 @@ document.addEventListener('mousemove', function (e) {
   if (isDown) {
     divOverlay.style.left = (e.clientX + offset[0]) + 'px';
     divOverlay.style.top = (e.clientY + offset[1]) + 'px';
-    deleteLinks(content1, content2);
+    // deleteLinks(content1, content2);
     linkElements(content1, content2);
   }
 }, true);

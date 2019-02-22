@@ -25,17 +25,17 @@ function linkElements(element1, element2) {
       // create links
       width = element2.getBoundingClientRect().left - element1.getBoundingClientRect().right + 2;
       height = element2.getBoundingClientRect().top - element1.getBoundingClientRect().top;
-      createLinks(element1, 'topLeft', plug1_posX, plug1_posY, width, height);
-      createLinks(element2, 'bottomRight', plug2_posX, plug2_posY, width, height);
+      createLinks(element1, 'top-right', plug1_posX, plug1_posY, width, height);
+      createLinks(element2, 'bottom-left', plug2_posX, plug2_posY, width, height);
       createArrow(element1, plug1_posX + width / 2,
         plug1_posY + height / 2, 'bottom');
     } else {
       // create links
       width = element2.getBoundingClientRect().left - element1.getBoundingClientRect().right + 2;
       height = element1.getBoundingClientRect().top - element2.getBoundingClientRect().top;
-      createLinks(element1, 'bottomLeft',
+      createLinks(element1, 'bottom-right',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-      createLinks(element2, 'topRight',
+      createLinks(element2, 'top-left',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
     }
   } else {
@@ -52,17 +52,17 @@ function linkElements(element1, element2) {
       // create links
       width = element1.getBoundingClientRect().left - element2.getBoundingClientRect().right + 2;
       height = element2.getBoundingClientRect().top - element1.getBoundingClientRect().top;
-      createLinks(element1, 'topRight',
+      createLinks(element1, 'top-left',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-      createLinks(element2, 'bottomLeft',
+      createLinks(element2, 'bottom-right',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
     } else {
       // create links
       width = element1.getBoundingClientRect().left - element2.getBoundingClientRect().right + 2;
       height = element1.getBoundingClientRect().top - element2.getBoundingClientRect().top;
-      createLinks(element1, 'bottomRight',
+      createLinks(element1, 'bottom-left',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-      createLinks(element2, 'topLeft',
+      createLinks(element2, 'top-right',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
     }
   }
@@ -95,26 +95,30 @@ function createLinks(element, direction, plugX, plugY, width, height) {
   let link = document.createElement('div');
   element.appendChild(link);
 
-  if (direction === 'topLeft') {
+  if (direction === 'top-right') {
     // link has opposite borders horizontally
+    link.className = 'link';
     link.className = 'top-right';
     link.style.left = plugX + 'px';
     link.style.top = plugY + 'px';
     link.style.width = width / 2 + 'px';
     link.style.height = height / 2 + 'px';
-  } else if (direction === 'topRight') {
+  } else if (direction === 'top-left') {
+    link.className = 'link';
     link.className = 'top-left';
     link.style.left = plugX - width / 2 + 'px';
     link.style.top = plugY + 'px';
     link.style.width = width / 2 + 'px';
     link.style.height = height / 2 + 'px'
-  } else if (direction === 'bottomLeft') {
+  } else if (direction === 'bottom-right') {
+    link.className = 'link';
     link.className = 'bottom-right';
     link.style.left = plugX + 'px';
     link.style.top = plugY - height / 2 + 'px';
     link.style.width = width / 2 + 'px';
     link.style.height = height / 2 + 'px';
-  } else if (direction === 'bottomRight') {
+  } else if (direction === 'bottom-left') {
+    link.className = 'link';
     link.className = 'bottom-left';
     link.style.left = plugX - width / 2 + 'px';
     link.style.top = plugY - height / 2 + 'px';
@@ -125,8 +129,9 @@ function createLinks(element, direction, plugX, plugY, width, height) {
 
 function deleteLinks(element1, element2) {
   console.log('element1 last child :', element1.lastElementChild);
-  element1.parentNode.removeChild(element1.lastElementChild);
-  element2.parentNode.removeChild(element2.lastElementChild);
+  let divs = document.getElementsByTagName('div');
+  console.log(divs);
+  while (divs[0]) divs[0].element1.removeChild(divs[0]);
 }
 
 
