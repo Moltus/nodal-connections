@@ -10,10 +10,11 @@ function linkElements(element1, element2) {
   let plug2_posX;
   let plug2_posY;
 
-  const elem1Info = element1.getBoundingClientRect();
+  let elem1Info = element1.getBoundingClientRect();
   console.log('elem1Info : ', elem1Info);
-  const elem2Info = element2.getBoundingClientRect();
+  let elem2Info = element2.getBoundingClientRect();
   console.log('elem2Info : ', elem2Info);
+  let elem1 
 
   if (elem1Info.left <= elem2Info.left) {
     // get X and Y positions for origins if elem1 is left of elem2
@@ -62,6 +63,8 @@ function linkElements(element1, element2) {
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'top-right',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+      createArrow(element1, plug1_posX + width / 2,
+        plug1_posY - height / 2, 'up');
     } else {
       // create links
       width = elem1Info.left - elem2Info.right + 2;
@@ -70,6 +73,8 @@ function linkElements(element1, element2) {
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
       createLinks(element2, 'bottom-right',
         plug1_posX, plug1_posY, plug2_posX, plug2_posY);
+      createArrow(element1, plug1_posX + width / 2,
+        plug1_posY + height / 2, 'down');
     }
     // create plugs after so they appear on top
     createPlug(element1, 'right');
@@ -147,4 +152,6 @@ function deleteLinks(element1, element2) {
 linkElements(content1, content2);
 linkElements(content3, content2);
 linkElements(content4, content2);
+linkElements(content2, content5);
+// linkElements(content6, content2);
 
