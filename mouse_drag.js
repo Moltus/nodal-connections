@@ -1,14 +1,12 @@
 // drag and drop elements
-const contents = document.getElementsByClassName('content');
-console.log(contents);
+const nodes = document.getElementsByClassName('node');
+console.log(nodes);
 let offset = [0, 0];
 let dragTarget ;
 let isDown = false;
 
 function dragStart(e) {
   dragTarget = e.target;
-  console.log(dragTarget);
-  console.log(content1);
   isDown = true;
   offset = [
     dragTarget.offsetLeft - e.clientX,
@@ -21,8 +19,8 @@ function drag(e) {
   if (isDown) {
     dragTarget.style.left = (e.clientX + offset[0]) + 'px';
     dragTarget.style.top = (e.clientY + offset[1]) + 'px';
-    deleteLinks(dragTarget, content2);
-    linkElements(dragTarget, content2);
+    deleteLinks(dragTarget, node2);
+    linkElements(dragTarget, node2);
   }
 }
 
@@ -30,11 +28,11 @@ function dragLeave(e) {
   isDown = false;
 }
 
-for (let i = 0; i < contents.length; i++){
-  console.log(contents[i]);
-  contents[i].addEventListener('mousedown', dragStart, true);
-  contents[i].addEventListener('mouseup', dragLeave, true);
-  contents[i].addEventListener('mousemove', drag, true);
+for (let i = 0; i < nodes.length; i++){
+  console.log(nodes[i]);
+  nodes[i].addEventListener('mousedown', dragStart, true);
+  nodes[i].addEventListener('mouseup', dragLeave, true);
+  nodes[i].addEventListener('mousemove', drag, true);
 }
 
 
