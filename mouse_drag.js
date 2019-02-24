@@ -1,10 +1,11 @@
 // drag and drop elements
-
+const contents = document.getElementsByClassName('content');
+console.log(contents);
 let offset = [0, 0];
 let dragTarget ;
 let isDown = false;
 
-document.addEventListener('mousedown', function (e) {
+function dragStart(e) {
   dragTarget = e.target;
   console.log(dragTarget);
   console.log(content1);
@@ -13,13 +14,9 @@ document.addEventListener('mousedown', function (e) {
     dragTarget.offsetLeft - e.clientX,
     dragTarget.offsetTop - e.clientY
   ];
-}, true);
+}
 
-document.addEventListener('mouseup', function () {
-  isDown = false;
-}, true);
-
-document.addEventListener('mousemove', function (e) {
+function drag(e) {
   event.preventDefault();
   if (isDown) {
     dragTarget.style.left = (e.clientX + offset[0]) + 'px';
@@ -27,4 +24,28 @@ document.addEventListener('mousemove', function (e) {
     deleteLinks(dragTarget, content2);
     linkElements(dragTarget, content2);
   }
-}, true);
+}
+
+function dragLeave(e) {
+  isDown = false;
+}
+
+for (let i = 0; i < contents.length; i++){
+  console.log(contents[i]);
+  contents[i].addEventListener('mousedown', dragStart, true);
+  contents[i].addEventListener('mouseup', dragLeave, true);
+  contents[i].addEventListener('mousemove', drag, true);
+}
+
+
+// document.addEventListener('mousedown', function (e) {
+  
+// }, true);
+
+// document.addEventListener('mouseup', function () {
+  
+// }, true);
+
+// document.addEventListener('mousemove', function (e) {
+  
+// }, true);
