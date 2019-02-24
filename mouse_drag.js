@@ -1,14 +1,17 @@
 // drag and drop elements
 
-var offset = [0, 0];
-var divOverlay = document.getElementById("content1");
-var isDown = false;
+let offset = [0, 0];
+let dragTarget ;
+let isDown = false;
 
-divOverlay.addEventListener('mousedown', function (e) {
+document.addEventListener('mousedown', function (e) {
+  dragTarget = e.target;
+  console.log(dragTarget);
+  console.log(content1);
   isDown = true;
   offset = [
-    divOverlay.offsetLeft - e.clientX,
-    divOverlay.offsetTop - e.clientY
+    dragTarget.offsetLeft - e.clientX,
+    dragTarget.offsetTop - e.clientY
   ];
 }, true);
 
@@ -19,9 +22,9 @@ document.addEventListener('mouseup', function () {
 document.addEventListener('mousemove', function (e) {
   event.preventDefault();
   if (isDown) {
-    divOverlay.style.left = (e.clientX + offset[0]) + 'px';
-    divOverlay.style.top = (e.clientY + offset[1]) + 'px';
-    // deleteLinks(content1, content2);
-    linkElements(content1, content2);
+    dragTarget.style.left = (e.clientX + offset[0]) + 'px';
+    dragTarget.style.top = (e.clientY + offset[1]) + 'px';
+    deleteLinks(dragTarget, content2);
+    linkElements(dragTarget, content2);
   }
 }, true);
