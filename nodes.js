@@ -158,18 +158,22 @@ class Node {
   }
 
   deleteLinks() {
-    while (this.element.childNodes[1]) {
-      this.element.removeChild(this.element.childNodes[1]);
-    }
+    // while (this.element.childNodes[1]) {
+    //   this.element.removeChild(this.element.childNodes[1]);
+    // }
 
-    for (let n of this.children) {
-      console.log('iterate through children : ', n);
-      while (n.childNodes[1]) {
-        n.removeChild(n.childNodes[1]);
-      }
+    // for (let n of this.children) {
+    //   console.log('iterate through children : ', n);
+    //   while (n.childNodes[1]) {
+    //     n.removeChild(n.childNodes[1]);
+    //   }
+
+    let toDel = document.querySelectorAll('.link [class*=node1]');
+    console.log("deleted links : ", toDel);
+    for (let n of toDel) n.parentNode.removeChild(n);
     }
     
-  }
+  
 }
 
 const node1 = new Node("node1");
