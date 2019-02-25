@@ -23,6 +23,7 @@ function drag(e) {
     dragTarget.style.left = (e.clientX + offset[0]) + 'px';
     dragTarget.style.top = (e.clientY + offset[1]) + 'px';
     targetNodeObj.deleteLinks();
+    targetNodeObj.linkParents();
     targetNodeObj.linkChildren();
   }
 }

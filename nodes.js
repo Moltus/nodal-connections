@@ -19,6 +19,8 @@ class Node {
     this.linkChildren();
   }
 
+  getParents()
+
   linkChildren(){
     for (let n of this.children) this.linkChild(n);
   }
@@ -50,7 +52,7 @@ class Node {
         let height = elem1VMid - elem2VMid;
         this.createLinks(this.element, child, 'bottom-right', plug1_posX, plug1_posY,width, height);
         this.createLinks(child, this.element, 'top-left', plug2_posX, plug2_posY, width, height);
-        this.createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, child, plug1_posX + width / 2,
           plug1_posY - height / 2, 'up');
       } else {
         // create links
@@ -60,7 +62,7 @@ class Node {
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, this.element, 'bottom-left',
           plug2_posX, plug2_posY, width, height);
-        this.createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, child,  plug1_posX + width / 2,
           plug1_posY + height / 2, 'down');
       }
       // create plugs after so they appear on top
@@ -82,7 +84,7 @@ class Node {
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
         this.createLinks(child, this.element, 'top-right',
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-        this.createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, child,  plug1_posX + width / 2,
           plug1_posY - height / 2, 'up');
       } else {
         // create links
@@ -92,7 +94,7 @@ class Node {
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
         this.createLinks(child, this.element, 'bottom-right',
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-        this.createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, child,  plug1_posX + width / 2,
           plug1_posY + height / 2, 'down');
       }
       // create plugs after so they appear on top
@@ -110,13 +112,15 @@ class Node {
     plug.style.top = y - 5 + 'px';
   }
 
-  createArrow(element, x, y, direction) {
+  createArrow(element1, element2, x, y, direction) {
     let arrow = document.createElement('div');
-    element.appendChild(arrow);
+    arrow.classList.add('arrow');
+    arrow.classList.add('arrow__' + element1.id + '-' + element2.id);
+    element1.appendChild(arrow);
     if (direction === 'up') {
-      arrow.className = 'arrow-up';
+      arrow.classList.add('arrow--up');
     } else if (direction === 'down') {
-      arrow.className = 'arrow-down';
+      arrow.classList.add('arrow--down');
     }
     arrow.style.left = x - 5 + 'px';
     arrow.style.top = y - 5 + 'px';
@@ -167,14 +171,19 @@ class Node {
     //   while (n.childNodes[1]) {
     //     n.removeChild(n.childNodes[1]);
     //   }
-
-    let toDel = document.querySelectorAll('.link [class*=node1]');
-    console.log("deleted links : ", toDel);
-    for (let n of toDel) n.parentNode.removeChild(n);
-    }
-    
-  
+    for (let n of nodes) {
+      var toDel = n.element.querySelectorAll(`[class*=${this.id}]`);
+      if (toDel.length !== 0) {
+        console.log("elements to remove : ", toDel);
+        for (let i of toDel) {
+          console.log(`subelements of ${toDel} to remove :`,  i);
+          n.element.removeChild(i);
+        }
+      }
+    } 
+  }
 }
+
 
 const node1 = new Node("node1");
 const node2 = new Node("node2");
