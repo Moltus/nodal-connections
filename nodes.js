@@ -1,13 +1,8 @@
 
-
 class Node {
   constructor(id, color=undefined) {
     this.id = id;
     this.element = document.getElementById(id);
-    this.bbox = this.element.getBoundingClientRect()
-    // let red = Math.floor(Math.random()*50) + 50;
-    // let green = Math.floor(Math.random()*50) + 50;
-    // let red = Math.floor(Math.random()*50) + 50;
     this.color = (color || 'rgb(' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50) + ')');
@@ -16,22 +11,32 @@ class Node {
     this.parents = [];
   }
 
-  getChildren(targets) {
-    for (let i = 0; i < targets.length; i++) this.children.push(value); 
+  getChildren(...targets) {
+    console.log('getChildren targets :', targets);
+    for (let i = 0; i < targets.length; i++) {
+      this.children.push(targets[i]); 
+    }
+    this.linkChildren();
+  }
+
+  linkChildren(){
+    for (let n of this.children) this.linkChild(n);
   }
 
   linkChild(child) {
+    console.log('linking a child : ', child);
   // declare connection origins positions for assigning them later
     let plug1_posX;
     let plug1_posY;
     let plug2_posX;
     let plug2_posY;
     // TODO : maybe change the object bbox to a local one here ?
+    let elem1Bbox = this.element.getBoundingClientRect();
     let childBbox = child.getBoundingClientRect();
-    let elem1VMid = (this.bbox.bottom + this.bbox.top) / 2;
+    let elem1VMid = (elem1Bbox.bottom + elem1Bbox.top) / 2;
     let elem2VMid = (childBbox.bottom + childBbox.top) / 2;
 
-    if (this.bbox.left <= childBbox.left) {
+    if (elem1Bbox.left <= childBbox.left) {
       // get X and Y positions for origins if elem1 is left of elem2
       plug1_posX = this.element.clientLeft + this.element.clientWidth - 1;
       plug1_posY = this.element.clientTop + this.element.clientHeight / 2;
@@ -39,28 +44,28 @@ class Node {
       plug2_posY = child.clientTop + child.clientHeight / 2;
       
       
-      if (this.bbox.top >= childBbox.top) {
+      if (elem1Bbox.top >= childBbox.top) {
         // create links
-        width = childBbox.left - this.bbox.right + 2;
-        height = elem1VMid - elem2VMid;
-        createLinks(this.element, child, 'bottom-right', plug1_posX, plug1_posY, width, height);
-        createLinks(child, this.element, 'top-left', plug2_posX, plug2_posY, width, height);
-        createArrow(this.element, plug1_posX + width / 2,
+        let width = childBbox.left - elem1Bbox.right + 2;
+        let height = elem1VMid - elem2VMid;
+        this.createLinks(this.element, child, 'bottom-right', plug1_posX, plug1_posY,width, height);
+        this.createLinks(child, this.element, 'top-left', plug2_posX, plug2_posY, width, height);
+        this.createArrow(this.element, plug1_posX + width / 2,
           plug1_posY - height / 2, 'up');
       } else {
         // create links
-        width = childBbox.left - this.bbox.right + 2;
-        height = elem2VMid - elem1VMid;
-        createLinks(this.element, child, 'top-right',
+        let width = childBbox.left - elem1Bbox.right + 2;
+        let height = elem2VMid - elem1VMid;
+        this.createLinks(this.element, child, 'top-right',
           plug1_posX, plug1_posY, width, height);
-        createLinks(child, this.element, 'bottom-left',
+        this.createLinks(child, this.element, 'bottom-left',
           plug2_posX, plug2_posY, width, height);
-        createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, plug1_posX + width / 2,
           plug1_posY + height / 2, 'down');
       }
       // create plugs after so they appear on top
-      createPlug(this.element, plug1_posX, plug1_posY);
-      createPlug(child, plug2_posX, plug2_posY);
+      this.createPlug(this.element, plug1_posX, plug1_posY);
+      this.createPlug(child, plug2_posX, plug2_posY);
     } else {
       // get X and Y positions for origins if elem1 is right of elem2
       plug1_posX = this.element.clientLeft - 1;
@@ -69,30 +74,30 @@ class Node {
       plug2_posY = child.clientTop + child.clientHeight / 2;
       
 
-      if (this.bbox.top >= childBbox.top) {
+      if (elem1Bbox.top >= childBbox.top) {
         // create links
-        width = this.bbox.left - childBbox.right + 2;
-        height = elem1VMid - elem2VMid;
-        createLinks(this.element, child, 'bottom-left',
+        let width = elem1Bbox.left - childBbox.right + 2;
+        let height = elem1VMid - elem2VMid;
+        this.createLinks(this.element, child, 'bottom-left',
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-        createLinks(child, this.element, 'top-right',
+        this.createLinks(child, this.element, 'top-right',
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-        createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, plug1_posX + width / 2,
           plug1_posY - height / 2, 'up');
       } else {
         // create links
-        width = this.bbox.left - childBbox.right + 2;
-        height = elem2VMid - elem1VMid;
-        createLinks(this.element, child, 'top-left',
+        let width = elem1Bbox.left - childBbox.right + 2;
+        let height = elem2VMid - elem1VMid;
+        this.createLinks(this.element, child, 'top-left',
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-        createLinks(child, this.element, 'bottom-right',
+        this.createLinks(child, this.element, 'bottom-right',
           plug1_posX, plug1_posY, plug2_posX, plug2_posY);
-        createArrow(this.element, plug1_posX + width / 2,
+        this.createArrow(this.element, plug1_posX + width / 2,
           plug1_posY + height / 2, 'down');
       }
       // create plugs after so they appear on top
-      createPlug(this.element, plug1_posX, plug1_posY);
-      createPlug(child, plug2_posX, plug2_posY);
+      this.createPlug(this.element, plug1_posX, plug1_posY);
+      this.createPlug(child, plug2_posX, plug2_posY);
     }
   }
 
@@ -117,11 +122,12 @@ class Node {
     arrow.style.top = y - 5 + 'px';
   }
 
-  createLinks(child, direction, plugX, plugY, width, height) {
+  createLinks(element1, element2, direction, plugX, plugY, width, height) {
     let link = document.createElement('div');
-    this.element.appendChild(link);
+    element1.appendChild(link);
     link.classList.add('link');
-    link.classList.add('link__' + this.id + '-' + child.id);
+    // TODO : update this class add with correct ids.
+    link.classList.add('link__' + element1.id + '-' + element2.id);
 
     if (direction === 'top-right') {
       // link has opposite borders horizontally
@@ -151,23 +157,37 @@ class Node {
     }
   }
 
-  deleteLinks(element1, element2) {
-    while (element1.childNodes[1]) element1.removeChild(element1.childNodes[1]);
-    while (element2.childNodes[1]) element2.removeChild(element2.childNodes[1]);
+  deleteLinks() {
+    while (this.element.childNodes[1]) {
+      this.element.removeChild(this.element.childNodes[1]);
+    }
+
+    for (let n of this.children) {
+      console.log('iterate through children : ', n);
+      while (n.childNodes[1]) {
+        n.removeChild(n.childNodes[1]);
+      }
+    }
+    
   }
 }
 
-  const node1 = new Node("node1");
-  const node2 = new Node("node2");
-  const node3 = new Node("node3");
-  const node4 = new Node("node4");
-  const node5 = new Node("node5");
-  const node6 = new Node("node6");
+const node1 = new Node("node1");
+const node2 = new Node("node2");
+const node3 = new Node("node3");
+const node4 = new Node("node4");
+const node5 = new Node("node5");
+const node6 = new Node("node6");
 
-  node1.getChildren(node2);
-  node3.getChildren(node2);
-  node4.getChildren(node2);
-  node2.getChildren(node5);
-  node6.getChildren(node2);
-  node4.getChildren(node5);
+var nodes = [node1, node2, node3, node4, node5, node6];
+
+node1.getChildren(node2.element);
+node3.getChildren(node2.element);
+node4.getChildren(node2.element);
+node2.getChildren(node5.element);
+node6.getChildren(node2.element);
+node4.getChildren(node5.element);
+
+
+// for (let i of nodes) console.log(i);
 
