@@ -7,9 +7,9 @@ let isDown = false;
 
 function dragStart(e) {
   dragTarget = e.target;
-  console.log('dragTarget : ', dragTarget);
+  // console.log('dragTarget : ', dragTarget);
   for (let n of nodes) if (n.element === dragTarget) targetNodeObj = n;
-  console.log('did we find the node obj ? : ', targetNodeObj);
+  // console.log('did we find the node obj ? : ', targetNodeObj);
   isDown = true;
   offset = [
     dragTarget.offsetLeft - e.clientX,
@@ -32,11 +32,11 @@ function dragLeave(e) {
   isDown = false;
 }
 
-for (let i = 0; i < nodes.length; i++){
+for (let node of nodes){
   // console.log(nodes[i]);
-  nodes[i].element.addEventListener('mousedown', dragStart, true);
-  nodes[i].element.addEventListener('mouseup', dragLeave, true);
-  nodes[i].element.addEventListener('mousemove', drag, true);
+  node.element.addEventListener('mousedown', dragStart, true);
+  node.element.addEventListener('mouseup', dragLeave, true);
+  node.element.addEventListener('mousemove', drag, true);
 }
 
 
