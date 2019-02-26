@@ -7,6 +7,8 @@ let isDown = false;
 
 function dragStart(e) {
   dragTarget = e.target;
+  // TODO maybe check if it's really a node with classList.contains ?
+  dragTarget.style.zIndex = "100";
   // console.log('dragTarget : ', dragTarget);
   for (let n of nodes) if (n.element === dragTarget) targetNodeObj = n;
   // console.log('did we find the node obj ? : ', targetNodeObj);
@@ -29,6 +31,7 @@ function drag(e) {
 }
 
 function dragLeave(e) {
+  dragTarget.style.zIndex = "10";
   isDown = false;
 }
 
