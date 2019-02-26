@@ -53,8 +53,10 @@ class Node {
     let childBbox = child.getBoundingClientRect();
     let parentVMid = (parentBbox.bottom + parentBbox.top) / 2;
     let childVMid = (childBbox.bottom + childBbox.top) / 2;
+    let parentHMid = (parentBbox.left + parentBbox.right) / 2;
+    let childHMid = (childBbox.left + childBbox.right) / 2;
 
-    if (parentBbox.right <= childBbox.left) {
+    if (parentBbox.right < childBbox.left) {
       let width = childBbox.left - parentBbox.right + 2;
       // get X and Y positions for origins if parent is left of child
       plug1_posX = parent.clientLeft + parent.clientWidth - 1;
@@ -85,12 +87,12 @@ class Node {
       this.createPlug(parent, child, plug1_posX, plug1_posY);
       this.createPlug(child, parent, plug2_posX, plug2_posY);
 
-    } else if (parentBbox.left >= childBbox.right)  {
+    } else if (parentBbox.left > childBbox.right)  {
       let width = parentBbox.left - childBbox.right + 2;
       // get X and Y positions for origins if parent is right of child
       plug1_posX = parent.clientLeft - 1;
       plug1_posY = parent.clientTop + parent.clientHeight / 2;
-      plug2_posX = child.clientLeft + child.clientWidth;
+      plug2_posX = child.clientLeft + child.clientWidth - 1;
       plug2_posY = child.clientTop + child.clientHeight / 2;
       
 
@@ -117,6 +119,38 @@ class Node {
       // create plugs after so they appear on top
       this.createPlug(parent, child, plug1_posX, plug1_posY);
       this.createPlug(child, parent, plug2_posX, plug2_posY);
+
+    } else if ((parentBbox.right >= childBbox.left) && (parentBbox.right <= childBbox.right)) {
+      // console.log("directly under");
+      let width = childHMid - parentHMid;
+      
+      if (parentVMid >= childVMid) {
+        plug1_posX = (parent.clientLeft + parent.clientWidth) / 2;
+        plug1_posY = parent.clientTop - 1;
+        plug2_posX = (child.clientLeft + child.clientWidth) / 2;
+        plug2_posY = child.clientTop + child.clientHeight - 1;
+        // create links
+
+        let height = parentBbox.top - childBbox.bottom + 2;
+        this.createLinks(parent, child, 'top-left',
+          plug1_posX + width / 2, plug1_posY - height / 2, width, height);
+        this.createLinks(child, parent, 'bottom-right',
+          plug2_posX - width / 2, plug2_posY + height / 2, width, height);
+        this.createArrow(parent, child, plug1_posX + width / 2,
+          plug1_posY - height / 2, 'right');
+      } else {
+        // create links
+        let height = childBbox.top - parentBbox.bottom + 2;
+        this.createLinks(parent, child, 'top-left',
+          plug1_posX, plug1_posY, width, height);
+        this.createLinks(child, parent, 'bottom-right',
+          plug2_posX, plug2_posY, width, height);
+        this.createArrow(parent, child, plug1_posX - width / 2,
+          plug1_posY + height / 2, 'down');
+      }
+      // create plugs after so they appear on top
+      this.createPlug(parent, child, plug1_posX, plug1_posY);
+      this.createPlug(child, parent, plug2_posX, plug2_posY);
     }
   }
 
@@ -135,11 +169,7 @@ class Node {
     arrow.classList.add('arrow');
     arrow.classList.add('arrow__' + element1.id + '-' + element2.id);
     element1.appendChild(arrow);
-    if (direction === 'up') {
-      arrow.classList.add('arrow--up');
-    } else if (direction === 'down') {
-      arrow.classList.add('arrow--down');
-    }
+    arrow.classList.add('arrow--' + direction);
     arrow.style.left = x - 5 + 'px';
     arrow.style.top = y - 5 + 'px';
   }
