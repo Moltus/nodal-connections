@@ -123,14 +123,14 @@ class Node {
     } else if ((parentBbox.right >= childBbox.left) && (parentBbox.right <= childBbox.right)) {
       // console.log("directly under");
       let width = childHMid - parentHMid;
+      plug1_posX = (parent.clientLeft + parent.clientWidth) / 2;
+      plug2_posX = (child.clientLeft + child.clientWidth) / 2;
       
       if (parentVMid >= childVMid) {
-        plug1_posX = (parent.clientLeft + parent.clientWidth) / 2;
         plug1_posY = parent.clientTop - 1;
-        plug2_posX = (child.clientLeft + child.clientWidth) / 2;
         plug2_posY = child.clientTop + child.clientHeight - 1;
+       
         // create links
-
         let height = parentBbox.top - childBbox.bottom + 2;
         this.createLinks(parent, child, 'top-left',
           plug1_posX + width / 2, plug1_posY - height / 2, width, height);
@@ -138,19 +138,26 @@ class Node {
           plug2_posX - width / 2, plug2_posY + height / 2, width, height);
         this.createArrow(parent, child, plug1_posX + width / 2,
           plug1_posY - height / 2, 'right');
+        // create plugs after so they appear on top
+        this.createPlug(parent, child, plug1_posX, plug1_posY);
+        this.createPlug(child, parent, plug2_posX, plug2_posY);
+
       } else {
+        plug1_posY = parent.clientTop + parent.clientHeight;
+        plug2_posY = child.clientTop;
         // create links
         let height = childBbox.top - parentBbox.bottom + 2;
-        this.createLinks(parent, child, 'top-left',
-          plug1_posX, plug1_posY, width, height);
-        this.createLinks(child, parent, 'bottom-right',
-          plug2_posX, plug2_posY, width, height);
-        this.createArrow(parent, child, plug1_posX - width / 2,
-          plug1_posY + height / 2, 'down');
+        this.createLinks(parent, child, 'bottom-left',
+          plug1_posX + width / 2, plug1_posY + height / 2, width, height);
+        this.createLinks(child, parent, 'top-right',
+          plug2_posX - width / 2, plug2_posY - height / 2, width, height);
+        this.createArrow(parent, child, plug1_posX + width / 2,
+          plug1_posY + height / 2, 'right');
+        // create plugs after so they appear on top
+        this.createPlug(parent, child, plug1_posX, plug1_posY);
+        this.createPlug(child, parent, plug2_posX, plug2_posY);
       }
-      // create plugs after so they appear on top
-      this.createPlug(parent, child, plug1_posX, plug1_posY);
-      this.createPlug(child, parent, plug2_posX, plug2_posY);
+      
     }
   }
 
