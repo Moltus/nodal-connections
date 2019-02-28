@@ -4,14 +4,14 @@ let offset = [0, 0];
 let dragTarget;
 let targetNodeObj;
 let isDown = false;
+var nodeDivs = document.getElementsByClassName('node');
+var linkDivs = document.getElementsByClassName('link');
 
 function dragStart(e) {
   dragTarget = e.target;
-  // TODO maybe check if it's really a node with classList.contains ?
-  dragTarget.style.zIndex = "100";
-  // console.log('dragTarget : ', dragTarget);
+  if (dragTarget !== this) return;
+  // dragTarget.style.zIndex = "100";
   for (let n of nodes) if (n.element === dragTarget) targetNodeObj = n;
-  // console.log('did we find the node obj ? : ', targetNodeObj);
   isDown = true;
   offset = [
     dragTarget.offsetLeft - e.clientX,
@@ -31,15 +31,15 @@ function drag(e) {
 }
 
 function dragLeave(e) {
-  dragTarget.style.zIndex = "10";
+  // dragTarget.style.zIndex = "10";
   isDown = false;
 }
 
-for (let node of nodes){
+for (let node of nodeDivs){
   // console.log(nodes[i]);
-  node.element.addEventListener('mousedown', dragStart, true);
-  node.element.addEventListener('mouseup', dragLeave, true);
-  node.element.addEventListener('mousemove', drag, true);
+  node.addEventListener('mousedown', dragStart, true);
+  node.addEventListener('mouseup', dragLeave, true);
+  node.addEventListener('mousemove', drag, true);
 }
 
 

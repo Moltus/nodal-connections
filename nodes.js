@@ -175,9 +175,10 @@ class Node {
         // create plugs after so they appear on top
         this.createPlug(parent, child, plug1_posX, plug1_posY);
         this.createPlug(child, parent, plug2_posX, plug2_posY);
-      }
-      
+      }     
     }
+
+    
   }
 
   createPlug(element1, element2, x, y) {
@@ -196,8 +197,8 @@ class Node {
     arrow.classList.add('arrow__' + element1.id + '-' + element2.id);
     element1.appendChild(arrow);
     arrow.classList.add('arrow--' + direction);
-    arrow.style.left = x - 5 + 'px';
-    arrow.style.top = y - 5 + 'px';
+    arrow.style.left = x - 10 + 'px';
+    arrow.style.top = y - 10 + 'px';
   }
 
   createLinks(element1, element2, direction, plugX, plugY, width, height) {
