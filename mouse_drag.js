@@ -11,7 +11,7 @@ function dragStart(e) {
   dragTarget = e.target;
   if (dragTarget !== this) return;
   // dragTarget.style.zIndex = "100";
-  for (let n of nodes) if (n.element === dragTarget) targetNodeObj = n;
+  for (let n of nodes) if (n.domElement === dragTarget) targetNodeObj = n;
   isDown = true;
   offset = [
     dragTarget.offsetLeft - e.clientX,

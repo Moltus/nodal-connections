@@ -2,11 +2,13 @@
 class Node {
   constructor(id, color=undefined) {
     this.id = id;
-    this.element = document.getElementById(id);
+    this.domElement = document.getElementById(this.id);
+    this.domConnections = document.getElementById((this.id + '__connections'));
+    console.log("domConnections id : ", this.domConnections);
     this.color = (color || 'rgb(' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50) + ')');
-    this.element.style.backgroundColor = this.color;
+    this.domElement.style.backgroundColor = this.color;
     this.children = [];
     this.parents = [];
   }
@@ -29,19 +31,21 @@ class Node {
   }
 
   linkChildren(){
-    for (let child of this.children) this.linkChild(child.element);
+    for (let child of this.children) this.linkChild(child);
   }
 
   linkParents(){
     // console.log("parents are : ", this.parents);
     for (let parent of this.parents) {
       // console.log("parent : ", parent);
-      parent.linkChild(this.element);
+      parent.linkChild(this);
     }
   }
 
   linkChild(child) {
-    let parent = this.element;
+    let parent = this;
+    let parentElem = this.domElement;
+    let childElem = child.domElement;
     // console.log('parent : ' , parent, 'linking a child : ', child);
   // declare connection origins positions for assigning them later
     let plug1_posX;
@@ -49,8 +53,8 @@ class Node {
     let plug2_posX;
     let plug2_posY;
     // TODO : maybe change the object bbox to a local one here ?
-    let parentBbox = parent.getBoundingClientRect();
-    let childBbox = child.getBoundingClientRect();
+    let parentBbox = parentElem.getBoundingClientRect();
+    let childBbox = childElem.getBoundingClientRect();
     let parentVMid = (parentBbox.bottom + parentBbox.top) / 2;
     let childVMid = (childBbox.bottom + childBbox.top) / 2;
     let parentHMid = (parentBbox.left + parentBbox.right) / 2;
@@ -59,10 +63,10 @@ class Node {
     if (parentBbox.right < childBbox.left) {
       let width = childBbox.left - parentBbox.right + 2;
       // get X and Y positions for origins if parent is left of child
-      plug1_posX = parent.clientLeft + parent.clientWidth - 1;
-      plug1_posY = parent.clientTop + parent.clientHeight / 2;
-      plug2_posX = child.clientLeft - 1;
-      plug2_posY = child.clientTop + child.clientHeight / 2;
+      plug1_posX = parentElem.clientLeft + parentElem.clientWidth - 1;
+      plug1_posY = parentElem.clientTop + parentElem.clientHeight / 2;
+      plug2_posX = childElem.clientLeft - 1;
+      plug2_posY = childElem.clientTop + childElem.clientHeight / 2;
       
       
       if (parentVMid >= childVMid) {
@@ -90,10 +94,10 @@ class Node {
     } else if (parentBbox.left > childBbox.right)  {
       let width = parentBbox.left - childBbox.right + 2;
       // get X and Y positions for origins if parent is right of child
-      plug1_posX = parent.clientLeft - 1;
-      plug1_posY = parent.clientTop + parent.clientHeight / 2;
-      plug2_posX = child.clientLeft + child.clientWidth - 1;
-      plug2_posY = child.clientTop + child.clientHeight / 2;
+      plug1_posX = parentElem.clientLeft - 1;
+      plug1_posY = parentElem.clientTop + parentElem.clientHeight / 2;
+      plug2_posX = childElem.clientLeft + childElem.clientWidth - 1;
+      plug2_posY = childElem.clientTop + childElem.clientHeight / 2;
       
 
       if (parentVMid >= childVMid) {
@@ -122,12 +126,12 @@ class Node {
 
     } else { // when nodes are right above or under each other
       let width = childHMid - parentHMid;
-      plug1_posX = (parent.clientLeft + parent.clientWidth) / 2;
-      plug2_posX = (child.clientLeft + child.clientWidth) / 2;
+      plug1_posX = (parentElem.clientLeft + parentElem.clientWidth) / 2;
+      plug2_posX = (childElem.clientLeft + childElem.clientWidth) / 2;
       
       if (parentBbox.top > childBbox.bottom) {
-        plug1_posY = parent.clientTop - 1;
-        plug2_posY = child.clientTop + child.clientHeight - 1;
+        plug1_posY = parentElem.clientTop - 1;
+        plug2_posY = childElem.clientTop + childElem.clientHeight - 1;
        
         // create links
         let height = parentBbox.top - childBbox.bottom + 2;
@@ -152,8 +156,8 @@ class Node {
         this.createPlug(child, parent, plug2_posX, plug2_posY);
 
       } else if (parentBbox.bottom < childBbox.top){
-        plug1_posY = parent.clientTop + parent.clientHeight;
-        plug2_posY = child.clientTop;
+        plug1_posY = parentElem.clientTop + parentElem.clientHeight;
+        plug2_posY = childElem.clientTop;
         // create links
         let height = childBbox.top - parentBbox.bottom + 2;
         if (parentHMid <= childHMid) {
@@ -177,14 +181,13 @@ class Node {
         this.createPlug(child, parent, plug2_posX, plug2_posY);
       }     
     }
-
-    
   }
 
   createPlug(element1, element2, x, y) {
 
     let plug = document.createElement('div');
-    element1.appendChild(plug);
+    console.log("element1 connections : ", element1.domConnections)
+    element1.domConnections.appendChild(plug);
     plug.className = 'plug';
     plug.classList.add('plug__' + element1.id + '-' + element2.id)
     plug.style.left = x - 5 + 'px';
@@ -195,7 +198,7 @@ class Node {
     let arrow = document.createElement('div');
     arrow.classList.add('arrow');
     arrow.classList.add('arrow__' + element1.id + '-' + element2.id);
-    element1.appendChild(arrow);
+    element1.domConnections.appendChild(arrow);
     arrow.classList.add('arrow--' + direction);
     arrow.style.left = x - 10 + 'px';
     arrow.style.top = y - 10 + 'px';
@@ -203,7 +206,8 @@ class Node {
 
   createLinks(element1, element2, direction, plugX, plugY, width, height) {
     let link = document.createElement('div');
-    element1.appendChild(link);
+
+    element1.domConnections.appendChild(link);
     link.classList.add('link');
     // TODO : update this class add with correct ids.
     link.classList.add('link__' + element1.id + '-' + element2.id);
@@ -235,8 +239,8 @@ class Node {
   }
 
   deleteLinks() {
-    // while (this.element.childNodes[1]) {
-    //   this.element.removeChild(this.element.childNodes[1]);
+    // while (this.domConnections.childNodes[1]) {
+    //   this.domConnections.removeChild(this.domConnections.childNodes[1]);
     // }
 
     // for (let n of this.children) {
@@ -245,12 +249,12 @@ class Node {
     //     n.removeChild(n.childNodes[1]);
     //   }
     for (let n of nodes) {
-      let toDel = n.element.querySelectorAll(`[class*=${this.id}]`);
+      let toDel = n.domConnections.querySelectorAll(`[class*=${this.id}]`);
       if (toDel.length !== 0) {
         // console.log("elements to remove : ", toDel);
         for (let i of toDel) {
           // console.log(`subelements of ${toDel} to remove :`,  i);
-          n.element.removeChild(i);
+          n.domConnections.removeChild(i);
         }
       }
     } 
