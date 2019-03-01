@@ -4,13 +4,14 @@ class Node {
     this.id = id;
     this.domElement = document.getElementById(this.id);
     this.domConnections = document.getElementById((this.id + '__connections'));
-    console.log("domConnections id : ", this.domConnections);
+    // console.log("domConnections id : ", this.domConnections);
     this.color = (color || 'rgb(' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50) + ')');
     this.domElement.style.backgroundColor = this.color;
     this.children = [];
     this.parents = [];
+    this.bbox = this.domElement.getBoundingClientRect();
   }
 
   getChildren(...targets) {
@@ -42,6 +43,15 @@ class Node {
     }
   }
 
+  moveNode(x, y) {
+    this.bbox.left = x;
+    this.bbox.top = y;
+  }
+
+  getPos() {
+
+  }
+
   linkChild(child) {
     let parent = this;
     let parentElem = this.domElement;
@@ -52,7 +62,6 @@ class Node {
     let plug1_posY;
     let plug2_posX;
     let plug2_posY;
-    // TODO : maybe change the object bbox to a local one here ?
     let parentBbox = parentElem.getBoundingClientRect();
     let childBbox = childElem.getBoundingClientRect();
     let parentVMid = (parentBbox.bottom + parentBbox.top) / 2;
@@ -63,10 +72,10 @@ class Node {
     if (parentBbox.right < childBbox.left) {
       let width = childBbox.left - parentBbox.right + 2;
       // get X and Y positions for origins if parent is left of child
-      plug1_posX = parentElem.clientLeft + parentElem.clientWidth - 1;
-      plug1_posY = parentElem.clientTop + parentElem.clientHeight / 2;
-      plug2_posX = childElem.clientLeft - 1;
-      plug2_posY = childElem.clientTop + childElem.clientHeight / 2;
+      plug1_posX = parentBbox.right - 1;
+      plug1_posY = parentBbox.top + parentBbox.height / 2;
+      plug2_posX = childBbox.left + 1;
+      plug2_posY = childBbox.top + childBbox.height / 2;
       
       
       if (parentVMid >= childVMid) {
@@ -94,10 +103,10 @@ class Node {
     } else if (parentBbox.left > childBbox.right)  {
       let width = parentBbox.left - childBbox.right + 2;
       // get X and Y positions for origins if parent is right of child
-      plug1_posX = parentElem.clientLeft - 1;
-      plug1_posY = parentElem.clientTop + parentElem.clientHeight / 2;
-      plug2_posX = childElem.clientLeft + childElem.clientWidth - 1;
-      plug2_posY = childElem.clientTop + childElem.clientHeight / 2;
+      plug1_posX = parentBbox.left + 1;
+      plug1_posY = parentBbox.top + parentBbox.height / 2;
+      plug2_posX = childBbox.right - 1;
+      plug2_posY = childBbox.top + childBbox.height / 2;
       
 
       if (parentVMid >= childVMid) {
@@ -126,12 +135,12 @@ class Node {
 
     } else { // when nodes are right above or under each other
       let width = childHMid - parentHMid;
-      plug1_posX = (parentElem.clientLeft + parentElem.clientWidth) / 2;
-      plug2_posX = (childElem.clientLeft + childElem.clientWidth) / 2;
+      plug1_posX = (parentBbox.right + parentBbox.left) / 2;
+      plug2_posX = (childBbox.right + childBbox.left) / 2;
       
       if (parentBbox.top > childBbox.bottom) {
-        plug1_posY = parentElem.clientTop - 1;
-        plug2_posY = childElem.clientTop + childElem.clientHeight - 1;
+        plug1_posY = parentBbox.top + 1;
+        plug2_posY = childBbox.bottom - 1;
        
         // create links
         let height = parentBbox.top - childBbox.bottom + 2;
@@ -156,8 +165,8 @@ class Node {
         this.createPlug(child, parent, plug2_posX, plug2_posY);
 
       } else if (parentBbox.bottom < childBbox.top){
-        plug1_posY = parentElem.clientTop + parentElem.clientHeight;
-        plug2_posY = childElem.clientTop;
+        plug1_posY = parentBbox.bottom - 1;
+        plug2_posY = childBbox.top + 1;
         // create links
         let height = childBbox.top - parentBbox.bottom + 2;
         if (parentHMid <= childHMid) {
@@ -186,7 +195,7 @@ class Node {
   createPlug(element1, element2, x, y) {
 
     let plug = document.createElement('div');
-    console.log("element1 connections : ", element1.domConnections)
+    // console.log("element1 connections : ", element1.domConnections)
     element1.domConnections.appendChild(plug);
     plug.className = 'plug';
     plug.classList.add('plug__' + element1.id + '-' + element2.id)

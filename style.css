@@ -63,6 +63,7 @@ body {
 }
 
 .plug {
+  z-index: 10;
   position: absolute;
   width: 10px;
   height: 10px;
