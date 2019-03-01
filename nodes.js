@@ -12,6 +12,7 @@ class Node {
     this.children = [];
     this.parents = [];
     this.bbox = this.domElement.getBoundingClientRect();
+    console.log(this.bbox);
   }
 
   getChildren(...targets) {
@@ -43,13 +44,13 @@ class Node {
     }
   }
 
-  moveNode(x, y) {
-    this.bbox.left = x;
-    this.bbox.top = y;
+  movePos(x, y) {
+    this.domElement.style() = x;
+    this.domElement.top = y;
   }
 
   getPos() {
-
+    return [this.bbox.left, this.bbox.top];
   }
 
   linkChild(child) {
@@ -292,5 +293,6 @@ for (let n of nodes) {
   n.linkChildren();
 }
 
+node1.movePos(600, 600);
 // for (let i of nodes) console.log(i);
 

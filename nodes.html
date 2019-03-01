@@ -49,14 +49,17 @@
     <div class="connections" id="node6__connections"></div>
   </div>  
 
-  <button type="button" onclick="getNodesCoords()">get coords</button>
+  <div class="coords-info">
+    <button type="button" onclick="getNodesCoords()">get coords</button>
+    <span></span>
+  </div>
 
   <script src="nodes.js"></script>
   <script src="mouse_drag.js"></script>
   <script>
   function getNodesCoords(){
     for (let n of nodes){
-      console.log(n.id, n.domElement.getBoundingClientRect())
+      console.log(n.id, n.getPos());
     }
   }
   </script>
