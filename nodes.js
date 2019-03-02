@@ -44,13 +44,31 @@ class Node {
     }
   }
 
-  movePos(x, y) {
-    this.domElement.style() = x;
-    this.domElement.top = y;
+  move(x, y, time=1000) {
+    console.log(this, "  movePos : ", x, y)
+    this.domElement.style.transition = 'transform ' + time + 'ms';
+    this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    this.deleteLinks();
+    // this.domElement.style.transform = `translate(${x}, ${y})`;
+    // console.log(this.domElement, 'pos left : ', this.domElement.style.left);
+    let n = 0;
+    let i = setInterval(() => {
+      console.log(" n is equal to : ", n);
+      // this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+      // console.log('translate(' + x / 10 + 'px, ' + y / 10 + 'px)');
+      // this.domElement.style.top = y / 100 + 'px';
+      this.deleteLinks();
+      this.linkParents();
+      this.linkChildren();
+      n ++;
+      if (n === time / 10) clearInterval(i);
+
+    }, 10); 
+    
   }
 
-  getPos() {
-    return [this.bbox.left, this.bbox.top];
+  getCoords() {
+    return [this.domElement.getBoundingClientRect().left, this.domElement.getBoundingClientRect().top];
   }
 
   linkChild(child) {
@@ -210,8 +228,8 @@ class Node {
     arrow.classList.add('arrow__' + element1.id + '-' + element2.id);
     element1.domConnections.appendChild(arrow);
     arrow.classList.add('arrow--' + direction);
-    arrow.style.left = x - 10 + 'px';
-    arrow.style.top = y - 10 + 'px';
+    arrow.style.left = x - 7 + 'px';
+    arrow.style.top = y - 7 + 'px';
   }
 
   createLinks(element1, element2, direction, plugX, plugY, width, height) {
@@ -293,6 +311,6 @@ for (let n of nodes) {
   n.linkChildren();
 }
 
-node1.movePos(600, 600);
+node1.move(600, 600);
 // for (let i of nodes) console.log(i);
 

@@ -50,17 +50,23 @@
   </div>  
 
   <div class="coords-info">
+    <button type="button" onclick="node1.move('400', '500')">move node1</button>
     <button type="button" onclick="getNodesCoords()">get coords</button>
-    <span></span>
+    <span id="infoCoords"></span>
   </div>
 
   <script src="nodes.js"></script>
   <script src="mouse_drag.js"></script>
   <script>
+  const infoCoords = document.getElementById('infoCoords');
   function getNodesCoords(){
+    let infoText = '';
     for (let n of nodes){
-      console.log(n.id, n.getPos());
+      let coords = n.getCoords().map(Math.round);
+      infoText += `  ${n.id}  x: ${coords[0]} y: ${coords[1]} |`;
+      console.log(infoText);
     }
+    infoCoords.textContent = infoText;
   }
   </script>
 </body>

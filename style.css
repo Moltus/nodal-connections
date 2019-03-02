@@ -8,6 +8,11 @@ body {
 .container {
   position: relative;
 }
+
+#infoCoords {
+  color: #fff;
+  font-size: .8em;
+}
 .node {
   position: absolute;
   z-index: 10;
@@ -20,10 +25,13 @@ body {
   border: 1px solid #fff;
   border-radius: 20px;
   box-shadow: 5px 5px 10px #000;
+  /* transition: left 1s;
+  transition: top 1s; */
 }
 
 #node1 {
   background-color: rgb(67, 73, 66);
+  /* transition: transform 1s; */
   top: 50px;
   left: 50px;
 }
@@ -106,26 +114,26 @@ body {
 }
 
 .arrow--up {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 20px solid #fff;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 14px solid #fff;
 }
 
 .arrow--down {   
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 20px solid #fff;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 14px solid #fff;
   
 }
 
 .arrow--right {
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 20px solid #fff;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 14px solid #fff;
 }
 
 .arrow--left {
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right:20px solid #fff; 
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right:14px solid #fff; 
 }
