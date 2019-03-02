@@ -32,38 +32,38 @@ body {
 #node1 {
   background-color: rgb(67, 73, 66);
   /* transition: transform 1s; */
-  top: 50px;
-  left: 50px;
+  top: 400px;
+  left: 500px;
 }
 
 #node2 {
   background-color: rgb(73, 69, 66);
-  top: 200px;
-  left: 700px;
+  top: 400px;
+  left: 500px;
 }
 
 #node3 {
   background-color: rgb(66, 70, 73);
-  top: 500px;
-  left: 100px;
+  top: 400px;
+  left: 500px;
 }
 
 #node4 {
   background-color: rgb(73, 66, 69);
-  top: 700px;
-  left: 200px;
+  top: 400px;
+  left: 500px;
 }
 
 #node5 {
   background-color: rgb(73, 66, 73);
-  top: 300px;
-  left: 1000px;
+  top: 400px;
+  left: 500px;
 }
 
 #node6 {
   background-color: rgb(73, 72, 66);
-  top: 600px;
-  left: 1100px;
+  top: 400px;
+  left: 500px;
 }
 
 .connections {

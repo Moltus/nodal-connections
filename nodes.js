@@ -1,10 +1,11 @@
 
 class Node {
-  constructor(id, color=undefined) {
+  constructor(id, initialPosition, color=undefined) {
     this.id = id;
     this.domElement = document.getElementById(this.id);
     this.domConnections = document.getElementById((this.id + '__connections'));
     // console.log("domConnections id : ", this.domConnections);
+    this.initPos = initialPosition;
     this.color = (color || 'rgb(' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50) + ')');
@@ -13,6 +14,7 @@ class Node {
     this.parents = [];
     this.bbox = this.domElement.getBoundingClientRect();
     console.log(this.bbox);
+    this.animation = false;
   }
 
   getChildren(...targets) {
@@ -45,15 +47,20 @@ class Node {
   }
 
   move(x, y, time=1000) {
+    this.animation = true;
     console.log(this, "  movePos : ", x, y)
-    this.domElement.style.transition = 'transform ' + time + 'ms';
-    this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    // this.domElement.style.transition = 'transform ' + time + 'ms';
+    this.domElement.style.transition = 'all ' + time + 'ms';
+    // this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    this.domElement.style.left = x + 'px';
+    this.domElement.style.top = y + 'px';
     this.deleteLinks();
     // this.domElement.style.transform = `translate(${x}, ${y})`;
     // console.log(this.domElement, 'pos left : ', this.domElement.style.left);
     let n = 0;
-    let i = setInterval(() => {
+    let interval = setInterval(() => {
       console.log(" n is equal to : ", n);
+      console.log("interval : ", interval);
       // this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
       // console.log('translate(' + x / 10 + 'px, ' + y / 10 + 'px)');
       // this.domElement.style.top = y / 100 + 'px';
@@ -61,8 +68,11 @@ class Node {
       this.linkParents();
       this.linkChildren();
       n ++;
-      if (n === time / 10) clearInterval(i);
-
+      if (n === time / 10) {
+        this.domElement.style.transition = 'none';
+        clearInterval(interval);
+        this.animation = false;
+      }
     }, 10); 
     
   }
@@ -290,12 +300,12 @@ class Node {
 }
 
 
-const node1 = new Node("node1");
-const node2 = new Node("node2");
-const node3 = new Node("node3");
-const node4 = new Node("node4");
-const node5 = new Node("node5");
-const node6 = new Node("node6");
+const node1 = new Node("node1", [87, 70]);
+const node2 = new Node("node2", [430, 276]);
+const node3 = new Node("node3", [14, 394]);
+const node4 = new Node("node4", [290, 613]);
+const node5 = new Node("node5", [770, 408]);
+const node6 = new Node("node6", [831, 51]);
 
 var nodes = [node1, node2, node3, node4, node5, node6];
 
@@ -309,8 +319,10 @@ node4.getChildren(node5);
 for (let n of nodes) {
   n.getParents();
   n.linkChildren();
+  n.move(...n.initPos);
 }
 
-node1.move(600, 600);
-// for (let i of nodes) console.log(i);
+const initialNodesPos = [[87, 70], [430, 276], [14, 394], [290, 613], [770, 408], [831, 51]];
+// node1.move(600, 600);
+
 

@@ -49,15 +49,26 @@
     <div class="connections" id="node6__connections"></div>
   </div>  
 
+  <button type="button" onclick="toggleOptions()">Hide options</button>
   <div class="coords-info">
-    <button type="button" onclick="node1.move('400', '500')">move node1</button>
-    <button type="button" onclick="getNodesCoords()">get coords</button>
-    <span id="infoCoords"></span>
+    <button class="options" type="button" onclick="resetPositions()">Reset positions</button>
+    <button class="options" type="button" onclick="getNodesCoords()">get coords</button>
+    <span class="options" id="infoCoords"></span>
   </div>
 
   <script src="nodes.js"></script>
   <script src="mouse_drag.js"></script>
   <script>
+  const options = document.getElementsByClassName('options');
+  function toggleOptions() {
+    options.classList.toggle('active');
+  }
+  function resetPositions(){
+    for (let n of nodes) {
+      n.move(...n.initPos);
+    }
+  }
+ 
   const infoCoords = document.getElementById('infoCoords');
   function getNodesCoords(){
     let infoText = '';
