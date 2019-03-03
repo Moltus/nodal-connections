@@ -90,7 +90,7 @@ class Node {
     let plug1_posY;
     let plug2_posX;
     let plug2_posY;
-    let isFlat;
+    // let isFlat;
     let arrowDir;
     let parentBbox = parentElem.getBoundingClientRect();
     let childBbox = childElem.getBoundingClientRect();
@@ -113,23 +113,21 @@ class Node {
         // create links
         
         let height = parentVMid - childVMid;
-        // if (width/height < .25) {
-        //   isFlat = true;
-        //   arrowDir = 'right';
-        // }
+        arrowDir = (height/width < .15) ? 'right' : 'up';
         this.createLinks(parent, child, 'bottom-right', plug1_posX, plug1_posY,width, height);
         this.createLinks(child, parent, 'top-left', plug2_posX, plug2_posY, width, height);
         this.createArrow(parent, child, plug1_posX + width / 2,
-          plug1_posY - height / 2, 'up');
+          plug1_posY - height / 2, arrowDir);
       } else {
         // create links
         let height = childVMid - parentVMid;
+        arrowDir = (height / width < .15) ? 'right' : 'up';
         this.createLinks(parent, child, 'top-right',
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'bottom-left',
           plug2_posX, plug2_posY, width, height);
         this.createArrow(parent, child,  plug1_posX + width / 2,
-          plug1_posY + height / 2, 'down');
+          plug1_posY + height / 2, arrowDir);
       }
       // create plugs after so they appear on top
       this.createPlug(parent, child, plug1_posX, plug1_posY);
@@ -148,21 +146,23 @@ class Node {
         // create links
         
         let height = parentVMid - childVMid;
+        arrowDir = (height / width < .15) ? 'left' : 'up';
         this.createLinks(parent, child, 'bottom-left',
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'top-right',
           plug2_posX, plug2_posY, width, height);
         this.createArrow(parent, child,  plug1_posX - width / 2,
-          plug1_posY - height / 2, 'up');
+          plug1_posY - height / 2, arrowDir);
       } else {
         // create links
         let height = childVMid - parentVMid;
+        arrowDir = (height / width < .15) ? 'left' : 'down';
         this.createLinks(parent, child, 'top-left',
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'bottom-right',
           plug2_posX, plug2_posY, width, height);
         this.createArrow(parent, child,  plug1_posX - width / 2,
-          plug1_posY + height / 2, 'down');
+          plug1_posY + height / 2, arrowDir);
       }
       // create plugs after so they appear on top
       this.createPlug(parent, child, plug1_posX, plug1_posY);
@@ -180,20 +180,22 @@ class Node {
         // create links
         let height = parentBbox.top - childBbox.bottom + 2;
         if (parentHMid <= childHMid) {
+          arrowDir = (width / height < .15) ? 'up' : 'right';
           this.createLinks(parent, child, 'top-left',
             plug1_posX + width / 2, plug1_posY - height / 2, width, height);
           this.createLinks(child, parent, 'bottom-right',
             plug2_posX - width / 2, plug2_posY + height / 2, width, height);
           this.createArrow(parent, child, plug1_posX + width / 2,
-            plug1_posY - height / 2, 'right');
+            plug1_posY - height / 2, arrowDir);
         } else {
           let width = parentHMid - childHMid;
+          arrowDir = (width / height < .15) ? 'up' : 'left';
           this.createLinks(parent, child, 'top-right',
             plug1_posX - width / 2, plug1_posY - height / 2, width, height);
           this.createLinks(child, parent, 'bottom-left',
             plug2_posX + width / 2, plug2_posY + height / 2, width, height);
           this.createArrow(parent, child, plug1_posX - width / 2,
-            plug1_posY - height / 2, 'left');
+            plug1_posY - height / 2, arrowDir);
         }
         // create plugs after so they appear on top
         this.createPlug(parent, child, plug1_posX, plug1_posY);
@@ -205,20 +207,22 @@ class Node {
         // create links
         let height = childBbox.top - parentBbox.bottom + 2;
         if (parentHMid <= childHMid) {
+          arrowDir = (width / height < .15) ? 'down' : 'right';
           this.createLinks(parent, child, 'bottom-left',
             plug1_posX + width / 2, plug1_posY + height / 2, width, height);
           this.createLinks(child, parent, 'top-right',
             plug2_posX - width / 2, plug2_posY - height / 2, width, height);
           this.createArrow(parent, child, plug1_posX + width / 2,
-            plug1_posY + height / 2, 'right');
+            plug1_posY + height / 2, arrowDir);
         } else {
           let width = parentHMid - childHMid;
+          arrowDir = (width / height < .15) ? 'down' : 'left';
           this.createLinks(parent, child, 'bottom-right',
             plug1_posX - width / 2, plug1_posY + height / 2, width, height);
           this.createLinks(child, parent, 'top-left',
             plug2_posX + width / 2, plug2_posY - height / 2, width, height);
           this.createArrow(parent, child, plug1_posX - width / 2,
-            plug1_posY + height / 2, 'left');
+            plug1_posY + height / 2, arrowDir);
         }
         // create plugs after so they appear on top
         this.createPlug(parent, child, plug1_posX, plug1_posY);
@@ -253,8 +257,9 @@ class Node {
 
     element1.domConnections.appendChild(link);
     link.classList.add('link');
-    // TODO : update this class add with correct ids.
     link.classList.add('link__' + element1.id + '-' + element2.id);
+    // TODO : maybe add some flattened link style when height/width < .2 for ex.
+    // if (isFlat) link.classList.add('link--flat');
     link.style.width = width / 2 + 'px';
     link.style.height = height / 2 + 'px';
 
