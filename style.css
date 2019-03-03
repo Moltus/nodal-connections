@@ -9,12 +9,42 @@ body {
   position: relative;
 }
 
+button {
+  background-color: #555;
+  color: #fff;
+  text-decoration: none;
+  padding: .2rem .5rem;
+  display: inline-block;
+  transition: all 500ms;
+  border: 2px solid #555;
+}
+
+button:hover {
+  background-color: #fff;
+  border: 2px solid #555;
+  color: #555;
+}
+
+.options {
+  display: none;
+}
+
+.options.active {
+  display: inline-block;
+}
+
+.coords-info {
+  display: inline-block;
+}
+
 #infoCoords {
   color: #fff;
   font-size: .8em;
 }
 .node {
   position: absolute;
+  left: 500px;
+  top: 400px;
   z-index: 10;
   margin: 0;
   padding: 30px;
@@ -32,38 +62,32 @@ body {
 #node1 {
   background-color: rgb(67, 73, 66);
   /* transition: transform 1s; */
-  top: 400px;
-  left: 500px;
+
 }
 
 #node2 {
   background-color: rgb(73, 69, 66);
-  top: 400px;
-  left: 500px;
+
 }
 
 #node3 {
   background-color: rgb(66, 70, 73);
-  top: 400px;
-  left: 500px;
+
 }
 
 #node4 {
   background-color: rgb(73, 66, 69);
-  top: 400px;
-  left: 500px;
+
 }
 
 #node5 {
   background-color: rgb(73, 66, 73);
-  top: 400px;
-  left: 500px;
+
 }
 
 #node6 {
   background-color: rgb(73, 72, 66);
-  top: 400px;
-  left: 500px;
+
 }
 
 .connections {

@@ -46,24 +46,23 @@ class Node {
     }
   }
 
-  move(x, y, time=1000) {
+  move(x, y, suffix='px', time=1000) {
     this.animation = true;
     console.log(this, "  movePos : ", x, y)
-    // this.domElement.style.transition = 'transform ' + time + 'ms';
+
     this.domElement.style.transition = 'all ' + time + 'ms';
-    // this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-    this.domElement.style.left = x + 'px';
-    this.domElement.style.top = y + 'px';
+
+    this.domElement.style.left = x + suffix;
+    if (suffix === 'vw') suffix = 'vh';
+    console.log("move suffix : ", suffix);
+    this.domElement.style.top = y + suffix;
     this.deleteLinks();
-    // this.domElement.style.transform = `translate(${x}, ${y})`;
-    // console.log(this.domElement, 'pos left : ', this.domElement.style.left);
+
     let n = 0;
     let interval = setInterval(() => {
-      console.log(" n is equal to : ", n);
-      console.log("interval : ", interval);
-      // this.domElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-      // console.log('translate(' + x / 10 + 'px, ' + y / 10 + 'px)');
-      // this.domElement.style.top = y / 100 + 'px';
+      // console.log(" n is equal to : ", n);
+      // console.log("interval : ", interval);
+      
       this.deleteLinks();
       this.linkParents();
       this.linkChildren();
@@ -86,17 +85,20 @@ class Node {
     let parentElem = this.domElement;
     let childElem = child.domElement;
     // console.log('parent : ' , parent, 'linking a child : ', child);
-  // declare connection origins positions for assigning them later
+    // declare connection origins positions for assigning them later
     let plug1_posX;
     let plug1_posY;
     let plug2_posX;
     let plug2_posY;
+    let isFlat;
+    let arrowDir;
     let parentBbox = parentElem.getBoundingClientRect();
     let childBbox = childElem.getBoundingClientRect();
     let parentVMid = (parentBbox.bottom + parentBbox.top) / 2;
     let childVMid = (childBbox.bottom + childBbox.top) / 2;
     let parentHMid = (parentBbox.left + parentBbox.right) / 2;
     let childHMid = (childBbox.left + childBbox.right) / 2;
+    
 
     if (parentBbox.right < childBbox.left) {
       let width = childBbox.left - parentBbox.right + 2;
@@ -111,6 +113,10 @@ class Node {
         // create links
         
         let height = parentVMid - childVMid;
+        // if (width/height < .25) {
+        //   isFlat = true;
+        //   arrowDir = 'right';
+        // }
         this.createLinks(parent, child, 'bottom-right', plug1_posX, plug1_posY,width, height);
         this.createLinks(child, parent, 'top-left', plug2_posX, plug2_posY, width, height);
         this.createArrow(parent, child, plug1_posX + width / 2,
