@@ -146,7 +146,7 @@ class Node {
         // create links
         
         let height = parentVMid - childVMid;
-        arrowDir = (height / width < .15) ? 'left' : 'up';
+        arrowDir = (height / width < .1) ? 'left' : 'up';
         this.createLinks(parent, child, 'bottom-left',
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'top-right',
@@ -156,7 +156,7 @@ class Node {
       } else {
         // create links
         let height = childVMid - parentVMid;
-        arrowDir = (height / width < .15) ? 'left' : 'down';
+        arrowDir = (height / width < .1) ? 'left' : 'down';
         this.createLinks(parent, child, 'top-left',
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'bottom-right',
@@ -180,7 +180,7 @@ class Node {
         // create links
         let height = parentBbox.top - childBbox.bottom + 2;
         if (parentHMid <= childHMid) {
-          arrowDir = (width / height < .15) ? 'up' : 'right';
+          arrowDir = (width / height < .1) ? 'up' : 'right';
           this.createLinks(parent, child, 'top-left',
             plug1_posX + width / 2, plug1_posY - height / 2, width, height);
           this.createLinks(child, parent, 'bottom-right',
@@ -189,7 +189,7 @@ class Node {
             plug1_posY - height / 2, arrowDir);
         } else {
           let width = parentHMid - childHMid;
-          arrowDir = (width / height < .15) ? 'up' : 'left';
+          arrowDir = (width / height < .1) ? 'up' : 'left';
           this.createLinks(parent, child, 'top-right',
             plug1_posX - width / 2, plug1_posY - height / 2, width, height);
           this.createLinks(child, parent, 'bottom-left',
@@ -207,7 +207,7 @@ class Node {
         // create links
         let height = childBbox.top - parentBbox.bottom + 2;
         if (parentHMid <= childHMid) {
-          arrowDir = (width / height < .15) ? 'down' : 'right';
+          arrowDir = (width / height < .1) ? 'down' : 'right';
           this.createLinks(parent, child, 'bottom-left',
             plug1_posX + width / 2, plug1_posY + height / 2, width, height);
           this.createLinks(child, parent, 'top-right',
@@ -216,7 +216,7 @@ class Node {
             plug1_posY + height / 2, arrowDir);
         } else {
           let width = parentHMid - childHMid;
-          arrowDir = (width / height < .15) ? 'down' : 'left';
+          arrowDir = (width / height < .1) ? 'down' : 'left';
           this.createLinks(parent, child, 'bottom-right',
             plug1_posX - width / 2, plug1_posY + height / 2, width, height);
           this.createLinks(child, parent, 'top-left',
