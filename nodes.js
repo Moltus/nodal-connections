@@ -80,7 +80,7 @@ class Node {
     return [this.domElement.getBoundingClientRect().left, this.domElement.getBoundingClientRect().top];
   }
 
-  linkChild(child) {
+  linkChild(child, arrow=true) {
     let parent = this;
     let parentElem = this.domElement;
     let childElem = child.domElement;
@@ -116,7 +116,7 @@ class Node {
         arrowDir = (height/width < .15) ? 'right' : 'up';
         this.createLinks(parent, child, 'bottom-right', plug1_posX, plug1_posY,width, height);
         this.createLinks(child, parent, 'top-left', plug2_posX, plug2_posY, width, height);
-        this.createArrow(parent, child, plug1_posX + width / 2,
+        if (arrow) this.createArrow(parent, child, plug1_posX + width / 2,
           plug1_posY - height / 2, arrowDir);
       } else {
         // create links
@@ -126,7 +126,7 @@ class Node {
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'bottom-left',
           plug2_posX, plug2_posY, width, height);
-        this.createArrow(parent, child,  plug1_posX + width / 2,
+        if (arrow) this.createArrow(parent, child,  plug1_posX + width / 2,
           plug1_posY + height / 2, arrowDir);
       }
       // create plugs after so they appear on top
@@ -151,7 +151,7 @@ class Node {
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'top-right',
           plug2_posX, plug2_posY, width, height);
-        this.createArrow(parent, child,  plug1_posX - width / 2,
+        if (arrow) this.createArrow(parent, child,  plug1_posX - width / 2,
           plug1_posY - height / 2, arrowDir);
       } else {
         // create links
@@ -161,7 +161,7 @@ class Node {
           plug1_posX, plug1_posY, width, height);
         this.createLinks(child, parent, 'bottom-right',
           plug2_posX, plug2_posY, width, height);
-        this.createArrow(parent, child,  plug1_posX - width / 2,
+        if (arrow) this.createArrow(parent, child,  plug1_posX - width / 2,
           plug1_posY + height / 2, arrowDir);
       }
       // create plugs after so they appear on top
@@ -185,7 +185,7 @@ class Node {
             plug1_posX + width / 2, plug1_posY - height / 2, width, height);
           this.createLinks(child, parent, 'bottom-right',
             plug2_posX - width / 2, plug2_posY + height / 2, width, height);
-          this.createArrow(parent, child, plug1_posX + width / 2,
+          if (arrow) this.createArrow(parent, child, plug1_posX + width / 2,
             plug1_posY - height / 2, arrowDir);
         } else {
           let width = parentHMid - childHMid;
@@ -194,7 +194,7 @@ class Node {
             plug1_posX - width / 2, plug1_posY - height / 2, width, height);
           this.createLinks(child, parent, 'bottom-left',
             plug2_posX + width / 2, plug2_posY + height / 2, width, height);
-          this.createArrow(parent, child, plug1_posX - width / 2,
+          if (arrow) this.createArrow(parent, child, plug1_posX - width / 2,
             plug1_posY - height / 2, arrowDir);
         }
         // create plugs after so they appear on top
@@ -212,7 +212,7 @@ class Node {
             plug1_posX + width / 2, plug1_posY + height / 2, width, height);
           this.createLinks(child, parent, 'top-right',
             plug2_posX - width / 2, plug2_posY - height / 2, width, height);
-          this.createArrow(parent, child, plug1_posX + width / 2,
+          if (arrow) this.createArrow(parent, child, plug1_posX + width / 2,
             plug1_posY + height / 2, arrowDir);
         } else {
           let width = parentHMid - childHMid;
@@ -221,7 +221,7 @@ class Node {
             plug1_posX - width / 2, plug1_posY + height / 2, width, height);
           this.createLinks(child, parent, 'top-left',
             plug2_posX + width / 2, plug2_posY - height / 2, width, height);
-          this.createArrow(parent, child, plug1_posX - width / 2,
+          if (arrow) this.createArrow(parent, child, plug1_posX - width / 2,
             plug1_posY + height / 2, arrowDir);
         }
         // create plugs after so they appear on top
