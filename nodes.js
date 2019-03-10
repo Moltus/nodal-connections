@@ -4,7 +4,6 @@ class Node {
     this.id = id;
     this.domElement = document.getElementById(this.id);
     this.domConnections = document.getElementById((this.id + '__connections'));
-    // console.log("domConnections id : ", this.domConnections);
     this.initPos = initialPosition;
     this.color = (color || 'rgb(' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50)
@@ -18,13 +17,14 @@ class Node {
   }
 
   getChildren(...targets) {
-    // console.log('getChildren targets :', targets);
+    // method for adding children to the node.children property
     for (let i of targets) {
       this.children.push(i); 
     }
   }
 
   getParents() {
+    // method for adding parents to the node.parents property
     for (let n of nodes) {
       for (let i of n.children) {
         if (this == i) {
@@ -35,18 +35,19 @@ class Node {
   }
 
   linkChildren(){
+    // start creating links for all children in node.children array
     for (let child of this.children) this.linkChild(child);
   }
 
   linkParents(){
-    // console.log("parents are : ", this.parents);
-    for (let parent of this.parents) {
-      // console.log("parent : ", parent);
-      parent.linkChild(this);
-    }
+    // start creating links for all parents in node.parents array
+    for (let parent of this.parents) parent.linkChild(this);
   }
 
   move(x, y, suffix='px', time=1000) {
+    // manual animated movement for nodes
+    // this temporarily disables drag and drop movement
+    // default transition is 1sec
     this.animation = true;
     console.log(this, "  movePos : ", x, y)
 
@@ -60,9 +61,6 @@ class Node {
 
     let n = 0;
     let interval = setInterval(() => {
-      // console.log(" n is equal to : ", n);
-      // console.log("interval : ", interval);
-      
       this.deleteLinks();
       this.linkParents();
       this.linkChildren();
@@ -81,8 +79,8 @@ class Node {
   }
 
   linkChild(child, arrow=true) {
-    let parent = this;
-    let parentElem = this.domElement;
+    let parent = this; // for readability
+    let parentElem = parent.domElement;
     let childElem = child.domElement;
     let parentBbox = parentElem.getBoundingClientRect();
     let childBbox = childElem.getBoundingClientRect();
@@ -102,8 +100,6 @@ class Node {
     let height;
     let arrowDir;
     
-    
-
     if (parentBbox.right < childBbox.left) {
       // parent is left of child
       width = childBbox.left - parentBbox.right + 2;
@@ -226,7 +222,6 @@ class Node {
     function createPlug(element1, element2, x, y) {
   
       let plug = document.createElement('div');
-      // console.log("element1 connections : ", element1.domConnections)
       element1.domConnections.appendChild(plug);
       plug.className = 'plug';
       plug.classList.add('plug__' + element1.id + '-' + element2.id)
@@ -240,8 +235,7 @@ class Node {
       element1.domConnections.appendChild(link);
       link.classList.add('link');
       link.classList.add('link__' + element1.id + '-' + element2.id);
-      // TODO : maybe add some flattened link style when height/width < .2 for ex.
-      // if (isFlat) link.classList.add('link--flat');
+
       link.style.width = width / 2 + 'px';
       link.style.height = height / 2 + 'px';
   
@@ -263,21 +257,11 @@ class Node {
   }
 
   deleteLinks() {
-    // while (this.domConnections.childNodes[1]) {
-    //   this.domConnections.removeChild(this.domConnections.childNodes[1]);
-    // }
 
-    // for (let n of this.children) {
-    //   console.log('iterate through children : ', n);
-    //   while (n.childNodes[1]) {
-    //     n.removeChild(n.childNodes[1]);
-    //   }
     for (let n of nodes) {
       let toDel = n.domConnections.querySelectorAll(`[class*=${this.id}]`);
       if (toDel.length !== 0) {
-        // console.log("elements to remove : ", toDel);
         for (let i of toDel) {
-          // console.log(`subelements of ${toDel} to remove :`,  i);
           n.domConnections.removeChild(i);
         }
       }
@@ -286,28 +270,5 @@ class Node {
 }
 
 
-const node1 = new Node("node1", [87, 70]);
-const node2 = new Node("node2", [430, 276]);
-const node3 = new Node("node3", [14, 394]);
-const node4 = new Node("node4", [290, 613]);
-const node5 = new Node("node5", [770, 408]);
-const node6 = new Node("node6", [831, 51]);
-
-var nodes = [node1, node2, node3, node4, node5, node6];
-
-node1.getChildren(node2);
-node3.getChildren(node2);
-node4.getChildren(node2);
-node2.getChildren(node5);
-node6.getChildren(node2);
-node4.getChildren(node5);
-
-for (let n of nodes) {
-  n.getParents();
-  n.linkChildren();
-  n.move(...n.initPos);
-}
-
-const initialNodesPos = [[87, 70], [430, 276], [14, 394], [290, 613], [770, 408], [831, 51]];
 
 

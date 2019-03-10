@@ -49,52 +49,21 @@
     <div class="connections" id="node6__connections"></div>
   </div>  
 
-  <button type="button" id="toggle-options" onclick="toggleOptions()">Show options</button>
+  <button type="button" class="btn" id="toggle-options">Show options</button>
   <div class="coords-info">
-    <button class="options" type="button" onclick="randomPositions()">Random positions</button>
-    <button class="options" type="button" onclick="resetPositions()">Reset positions</button>
-    <button class="options" type="button" onclick="getNodesCoords()">get coords</button>
-    <span class="options" id="infoCoords"></span>
+    <button type="button" class="btn options" id="random-pos">
+      Random positions</button>
+    <button type="button" class="btn options" id="reset-pos">
+      Reset positions</button>
+    <button type="button" class="btn options" id="get-coords">
+      get coords</button>
+    <span id="infoCoords"></span>
   </div>
 
   <script src="nodes.js"></script>
   <script src="mouse_drag.js"></script>
-  <script>
-  const options = document.getElementsByClassName('options');
-  const optionsBtn = document.getElementById('toggle-options');
-  function toggleOptions() {
-    for (let i of options) i.classList.toggle('active');
-    optionsBtn.classList.toggle('active');
-    optionsBtn.textContent = optionsBtn.classList.contains('active') ? "Hide Options" : "Show options";  
-  }
+  <script src="app.js"></script>
+  <script src="buttons.js"></script>
 
-  function randomPositions(){
-    for (let n of nodes) {
-      if (n.animation) return;
-      rndX = Math.floor(Math.random() * 75) + 1;
-      rndY = Math.floor(Math.random() * 60) + 10;
-      n.move(rndX, rndY, 'vw');
-    }
-  }
-
-  function resetPositions() {
-    for (let n of nodes) {
-      if (n.animation) return;
-      n.move(...n.initPos);
-    }
-  }
-
- 
-  const infoCoords = document.getElementById('infoCoords');
-  function getNodesCoords(){
-    let infoText = '';
-    for (let n of nodes){
-      let coords = n.getCoords().map(Math.round);
-      infoText += `  ${n.id}  x: ${coords[0]} y: ${coords[1]} |`;
-      console.log(infoText);
-    }
-    infoCoords.textContent = infoText;
-  }
-  </script>
 </body>
 </html>
