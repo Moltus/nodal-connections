@@ -3,17 +3,24 @@ class Node {
   constructor(id, initialPosition, color=undefined) {
     this.id = id;
     this.domElement = document.getElementById(this.id);
-    this.domConnections = document.getElementById((this.id + '__connections'));
+    console.log("domElement is : ", this.domElement);
     this.initPos = initialPosition;
-    this.color = (color || 'rgb(' + (Math.floor(Math.random() * 50) + 50)
-      + ',' + (Math.floor(Math.random() * 50) + 50)
-      + ',' + (Math.floor(Math.random() * 50) + 50) + ')');
-    this.domElement.style.backgroundColor = this.color;
+    this.color = (color || this.getColor());
+    this.type = 'node';
+    this.domConnections = document.getElementById((this.id + '__connections'));
     this.children = [];
     this.parents = [];
     this.bbox = this.domElement.getBoundingClientRect();
-    console.log(this.bbox);
     this.animation = false;
+  }
+
+  getColor() {
+    console.log("getting colors");
+    let color = 'rgb(' + (Math.floor(Math.random() * 50) + 50)
+      + ',' + (Math.floor(Math.random() * 50) + 50)
+      + ',' + (Math.floor(Math.random() * 50) + 50) + ')';
+    this.domElement.style.backgroundColor = color;
+    return color;
   }
 
   getChildren(...targets) {
@@ -25,7 +32,7 @@ class Node {
 
   getParents() {
     // method for adding parents to the node.parents property
-    for (let n of nodes) {
+    for (let n of nodesAndBadges) {
       for (let i of n.children) {
         if (this == i) {
           this.parents.push(n);
@@ -55,7 +62,6 @@ class Node {
 
     this.domElement.style.left = x + suffix;
     if (suffix === 'vw') suffix = 'vh';
-    console.log("move suffix : ", suffix);
     this.domElement.style.top = y + suffix;
     this.deleteLinks();
 
@@ -93,6 +99,16 @@ class Node {
     let plug1_posY;
     let plug2_posX;
     let plug2_posY;
+    // if parent or child is a badge give him center coordinates for all situations
+    if (parent.type == 'badge') {
+      var centerPlug1_posX = parentHMid;
+      var centerPlug1_posY = parentVMid;
+    }
+    if (child.type == 'badge') {
+      var centerPlug2_posX = childHMid;
+      var centerPlug2_posY = childVMid;
+    }
+    
     // declare width (X distance between plug 1 and 2)
     // declare height (Y distance between plug 1 and 2)
     // declare arrow direction (from parent to child or child to parent)
@@ -103,10 +119,10 @@ class Node {
     if (parentBbox.right < childBbox.left) {
       // parent is left of child
       width = childBbox.left - parentBbox.right + 2;
-      plug1_posX = parentBbox.right - 1;
-      plug1_posY = parentBbox.top + parentBbox.height / 2;
-      plug2_posX = childBbox.left + 1;
-      plug2_posY = childBbox.top + childBbox.height / 2;
+      plug1_posX = centerPlug1_posX || parentBbox.right - 1;
+      plug1_posY = centerPlug1_posY || parentBbox.top + parentBbox.height / 2;
+      plug2_posX = centerPlug2_posX || childBbox.left + 1;
+      plug2_posY = centerPlug2_posY || childBbox.top + childBbox.height / 2;
       
       
       if (parentVMid >= childVMid) {
@@ -133,10 +149,10 @@ class Node {
     } else if (parentBbox.left > childBbox.right)  {
       // parent is right of child
       width = parentBbox.left - childBbox.right + 2;
-      plug1_posX = parentBbox.left + 1;
-      plug1_posY = parentBbox.top + parentBbox.height / 2;
-      plug2_posX = childBbox.right - 1;
-      plug2_posY = childBbox.top + childBbox.height / 2;
+      plug1_posX = centerPlug1_posX || parentBbox.left + 1;
+      plug1_posY = centerPlug1_posY || parentBbox.top + parentBbox.height / 2;
+      plug2_posX = centerPlug2_posX || childBbox.right - 1;
+      plug2_posY = centerPlug2_posY || childBbox.top + childBbox.height / 2;
       
 
       if (parentVMid >= childVMid) {
@@ -163,14 +179,14 @@ class Node {
 
     } else { // when nodes are right above or under each other
       width = childHMid - parentHMid;
-      plug1_posX = (parentBbox.right + parentBbox.left) / 2;
-      plug2_posX = (childBbox.right + childBbox.left) / 2;
+      plug1_posX = centerPlug1_posX || (parentBbox.right + parentBbox.left) / 2;
+      plug2_posX = centerPlug2_posX || (childBbox.right + childBbox.left) / 2;
       
       if (parentBbox.top > childBbox.bottom) {
         // parent is under child
         height = parentBbox.top - childBbox.bottom + 2;
-        plug1_posY = parentBbox.top + 1;
-        plug2_posY = childBbox.bottom - 1;
+        plug1_posY = centerPlug1_posY || parentBbox.top + 1;
+        plug2_posY = centerPlug2_posY || childBbox.bottom - 1;
 
         if (parentHMid <= childHMid) {
           // parent is under child and parent is left of child
@@ -194,8 +210,8 @@ class Node {
 
       } else if (parentBbox.bottom < childBbox.top){
         // parent is above child
-        plug1_posY = parentBbox.bottom - 1;
-        plug2_posY = childBbox.top + 1;
+        plug1_posY = centerPlug1_posY || parentBbox.bottom - 1;
+        plug2_posY = centerPlug2_posY || childBbox.top + 1;
         // create links
         height = childBbox.top - parentBbox.bottom + 2;
         if (parentHMid <= childHMid) {
@@ -258,7 +274,7 @@ class Node {
 
   deleteLinks() {
 
-    for (let n of nodes) {
+    for (let n of nodesAndBadges) {
       let toDel = n.domConnections.querySelectorAll(`[class*=${this.id}]`);
       if (toDel.length !== 0) {
         for (let i of toDel) {
@@ -269,6 +285,20 @@ class Node {
   }
 }
 
+class Badge extends Node {
+  constructor(id, initialPosition, color = undefined) {
+    super(id, initialPosition, color);
+    this.type = 'badge';
+  }
+
+  getColor() {
+    let color = 'rgb(' + (Math.floor(Math.random() * 100) + 1)
+      + ',' + (Math.floor(Math.random() * 100) + 1)
+      + ',' + (Math.floor(Math.random() * 100) + 1) + ')';
+    // this.domElement.style.backgroundColor = color;
+    return color;
+  }
+}
 
 
 
