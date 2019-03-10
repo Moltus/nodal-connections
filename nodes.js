@@ -15,7 +15,6 @@ class Node {
   }
 
   getColor() {
-    console.log("getting colors");
     let color = 'rgb(' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50)
       + ',' + (Math.floor(Math.random() * 50) + 50) + ')';
@@ -32,7 +31,7 @@ class Node {
 
   getParents() {
     // method for adding parents to the node.parents property
-    for (let n of nodesAndBadges) {
+    for (let n of nodes) {
       for (let i of n.children) {
         if (this == i) {
           this.parents.push(n);
@@ -56,7 +55,6 @@ class Node {
     // this temporarily disables drag and drop movement
     // default transition is 1sec
     this.animation = true;
-    console.log(this, "  movePos : ", x, y)
 
     this.domElement.style.transition = 'all ' + time + 'ms';
 
@@ -84,7 +82,7 @@ class Node {
     return [this.domElement.getBoundingClientRect().left, this.domElement.getBoundingClientRect().top];
   }
 
-  linkChild(child, arrow=true) {
+  linkChild(child) {
     let parent = this; // for readability
     let parentElem = parent.domElement;
     let childElem = child.domElement;
@@ -114,15 +112,16 @@ class Node {
     // declare arrow direction (from parent to child or child to parent)
     let width;
     let height;
+    let arrow = (parent.type == 'node' && child.type == 'node')? true : false;
     let arrowDir;
     
     if (parentBbox.right < childBbox.left) {
       // parent is left of child
-      width = childBbox.left - parentBbox.right + 2;
       plug1_posX = centerPlug1_posX || parentBbox.right - 1;
       plug1_posY = centerPlug1_posY || parentBbox.top + parentBbox.height / 2;
       plug2_posX = centerPlug2_posX || childBbox.left + 1;
       plug2_posY = centerPlug2_posY || childBbox.top + childBbox.height / 2;
+      width = plug2_posX - plug1_posX;
       
       
       if (parentVMid >= childVMid) {
@@ -148,11 +147,11 @@ class Node {
 
     } else if (parentBbox.left > childBbox.right)  {
       // parent is right of child
-      width = parentBbox.left - childBbox.right + 2;
       plug1_posX = centerPlug1_posX || parentBbox.left + 1;
       plug1_posY = centerPlug1_posY || parentBbox.top + parentBbox.height / 2;
       plug2_posX = centerPlug2_posX || childBbox.right - 1;
       plug2_posY = centerPlug2_posY || childBbox.top + childBbox.height / 2;
+      width = plug1_posX - plug2_posX;
       
 
       if (parentVMid >= childVMid) {
@@ -184,9 +183,9 @@ class Node {
       
       if (parentBbox.top > childBbox.bottom) {
         // parent is under child
-        height = parentBbox.top - childBbox.bottom + 2;
         plug1_posY = centerPlug1_posY || parentBbox.top + 1;
         plug2_posY = centerPlug2_posY || childBbox.bottom - 1;
+        height = plug1_posY - plug2_posY;
 
         if (parentHMid <= childHMid) {
           // parent is under child and parent is left of child
@@ -213,7 +212,7 @@ class Node {
         plug1_posY = centerPlug1_posY || parentBbox.bottom - 1;
         plug2_posY = centerPlug2_posY || childBbox.top + 1;
         // create links
-        height = childBbox.top - parentBbox.bottom + 2;
+        height = plug2_posY - plug1_posY;
         if (parentHMid <= childHMid) {
           // parent is above child and left of child
           arrowDir = (width / height < .1) ? 'down' : 'right';
@@ -274,7 +273,7 @@ class Node {
 
   deleteLinks() {
 
-    for (let n of nodesAndBadges) {
+    for (let n of nodes) {
       let toDel = n.domConnections.querySelectorAll(`[class*=${this.id}]`);
       if (toDel.length !== 0) {
         for (let i of toDel) {

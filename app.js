@@ -9,7 +9,7 @@ const badge1 = new Badge("badge1", [400, 100], '#d46');
 const badge2 = new Badge("badge2", [550, 100], '#64d');
 const badge3 = new Badge("badge3", [700, 100], '#4d6');
 
-var nodesAndBadges = [node1, node2, node3, node4, node5, node6, badge1, badge2, badge3];
+var nodes = [node1, node2, node3, node4, node5, node6, badge1, badge2, badge3];
 
 node1.getChildren(node2);
 node3.getChildren(node2);
@@ -17,9 +17,9 @@ node4.getChildren(node2);
 node2.getChildren(node5);
 node6.getChildren(node2);
 node4.getChildren(node5);
-badge2.getChildren(badge1, badge3, node5);
+badge2.getChildren(badge1, badge3, node6);
 
-for (let n of nodesAndBadges) {
+for (let n of nodes) {
   n.getParents();
   n.linkChildren();
   n.move(...n.initPos);

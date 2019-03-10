@@ -4,14 +4,17 @@ let offset = [0, 0];
 let dragTarget;
 let targetNodeObj;
 let isDown = false;
-var nodeDivs = document.getElementsByClassName('node');
-var linkDivs = document.getElementsByClassName('link');
+// var nodeDivs = document.getElementsByClassName('node');
+var nodeDivs = nodes.map(a => a.domElement);
+console.log("nodeDivs : ", nodeDivs);
 
 function dragStart(e) {
   dragTarget = e.target;
+  console.log("drag target is : ", dragTarget);
   if (dragTarget !== this) return;
+  if (!dragTarget in nodeDivs) return;
   // dragTarget.style.zIndex = "100";
-  for (let n of nodesAndBadges) if (n.domElement === dragTarget) targetNodeObj = n;
+  for (let n of nodes) if (n.domElement === dragTarget) targetNodeObj = n;
   if (targetNodeObj.animation) return;
   isDown = true;
   offset = [
