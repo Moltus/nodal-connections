@@ -1,17 +1,46 @@
 
 class Node {
-  constructor(id, initialPosition, color=undefined) {
+  constructor(id, initialPosition, text=undefined, color=undefined) {
+    console.log('text argument is : ', text);
     this.id = id;
-    this.domElement = document.getElementById(this.id);
+    // this.domElement = document.getElementById(this.id);
+    this.text = text || this.id;
+    this.domElement = this.createElement();
     // console.log("domElement is : ", this.domElement);
     this.initPos = initialPosition;
-    this.color = (color || this.getColor());
+    this.color = color || this.getColor();
     this.type = 'node';
     this.domConnections = document.getElementById((this.id + '__connections'));
     this.children = [];
     this.parents = [];
     this.bbox = this.domElement.getBoundingClientRect();
     this.animation = false;
+  }
+
+  createElement() {
+    let container = document.createElement('div');
+    container.classList += 'node-container';
+    document.getElementById("wrapper").appendChild(container);
+
+    let nodeElement = document.createElement('div');
+    nodeElement.classList += 'node';
+    nodeElement.id = this.id;
+    console.log("text is : ", this.text);
+    for (let i of this.text) {
+      let para = document.createElement("p");
+      let txt = document.createTextNode(i);
+      para.appendChild(txt);
+      nodeElement.appendChild(para); 
+    }
+
+    container.appendChild(nodeElement);
+
+    let connections = document.createElement('div');
+    connections.classList += 'connections';
+    connections.id = this.id + '__connections';
+    container.appendChild(connections);
+
+    return nodeElement;
   }
 
   getColor() {
@@ -298,6 +327,23 @@ class Badge extends Node {
     bg.style.fill = color;
     return color;
   }
+
+  // createElement() {
+  //   let container = document.createElement('div');
+  //   container.classList += 'node-container';
+  //   document.getElementById("wrapper").appendChild(container);
+
+    
+
+  //   container.appendChild(nodeElement);
+
+  //   let connections = document.createElement('div');
+  //   connections.classList += 'connections';
+  //   connections.id = this.id + '__connections';
+  //   container.appendChild(connections);
+
+  //   return nodeElement;
+  // }
 }
 
 

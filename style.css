@@ -8,6 +8,15 @@ body {
   overflow: hidden; 
 }
 
+p {
+  margin: 0;
+  padding: 0;
+}
+
+p~p {
+  margin-top: 10px;
+}
+
 .container {
   position: relative; }
 
@@ -128,6 +137,6 @@ button {
     border-right: 14px solid #fff; }
 
 /* This to prevent clicks to select svg child elements */
-.container > svg > *{
+.node-container > * > * {
   pointer-events: none;
 }
