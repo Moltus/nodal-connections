@@ -5,7 +5,8 @@ body {
   background-image: url(bg.svg);
   font-family: 'Roboto', sans-serif;
   /* position: relative; /* for touch devices navigation */
-  overflow: hidden; }
+  overflow: hidden; 
+}
 
 .container {
   position: relative; }
@@ -23,15 +24,15 @@ button {
     border: 2px solid #555;
     color: #555; }
 
-.options {
+#options {
   display: none; }
-  .options.active {
+  #options.active {
     display: inline-block; }
 
-.coords-info {
-  display: inline-block; }
+.options__content {
+  display: inline; }
 
-#infoCoords {
+#info-coords {
   color: #fff;
   font-size: .8em; }
 
@@ -41,9 +42,12 @@ button {
   top: 400px;
   z-index: 10;
   margin: 0;
-  padding: 30px;
+  padding: 15px 20px;
+  /* text-justify: newspaper; */
   cursor: pointer;
+  font-size: 14px;
   font-weight: 100;
+  line-height: 1.3rem;
   color: #fff;
   width: 200px;
   border: 1px solid #fff;
@@ -52,6 +56,8 @@ button {
 
 .badge {
   position: absolute;
+  left: 500px;
+  top: 400px;
   width: 90px;
   height: 90px;
   z-index: 10;
@@ -61,7 +67,7 @@ button {
   background-color: transparent;
   box-shadow: 5px 5px 10px rgba(0,0,0,.5); }
   .badge__text {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 100;
     fill: #fff; }
   .badge__path {
@@ -69,24 +75,6 @@ button {
   .badge__bg {
     stroke: #fff;
     stroke-miterlimit: 10; }
-
-.badge1 {
-  top: 200px;
-  left: 300px; }
-  .badge1__bg {
-    fill: #5F3280; }
-
-.badge2 {
-  top: 200px;
-  left: 100px; }
-  .badge2__bg {
-    fill: #6D214F; }
-
-.badge3 {
-  top: 200px;
-  left: 200px; }
-  .badge3__bg {
-    fill: #3B3B98; }
 
 .connections {
   z-index: -1; }
@@ -138,3 +126,8 @@ button {
     border-top: 7px solid transparent;
     border-bottom: 7px solid transparent;
     border-right: 14px solid #fff; }
+
+/* This to prevent clicks to select svg child elements */
+.container > svg > *{
+  pointer-events: none;
+}

@@ -3,7 +3,7 @@ class Node {
   constructor(id, initialPosition, color=undefined) {
     this.id = id;
     this.domElement = document.getElementById(this.id);
-    console.log("domElement is : ", this.domElement);
+    // console.log("domElement is : ", this.domElement);
     this.initPos = initialPosition;
     this.color = (color || this.getColor());
     this.type = 'node';
@@ -294,7 +294,8 @@ class Badge extends Node {
     let color = 'rgb(' + (Math.floor(Math.random() * 100) + 1)
       + ',' + (Math.floor(Math.random() * 100) + 1)
       + ',' + (Math.floor(Math.random() * 100) + 1) + ')';
-    // this.domElement.style.backgroundColor = color;
+    let bg = document.getElementById(this.id + '__bg');
+    bg.style.fill = color;
     return color;
   }
 }

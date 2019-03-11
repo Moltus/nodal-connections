@@ -1,12 +1,13 @@
 document.getElementById("toggle-options").addEventListener('click', toggleOptions);
 document.getElementById("random-pos").addEventListener('click', randomPositions);
+document.getElementById("random-colors").addEventListener('click', randomColors);
 document.getElementById("reset-pos").addEventListener('click', resetPositions);
 document.getElementById("get-coords").addEventListener('click', getNodesCoords);
 
-const options = document.getElementsByClassName('options');
+const options = document.getElementById('options');
 const optionsBtn = document.getElementById('toggle-options');
 function toggleOptions() {
-  for (let i of options) i.classList.toggle('active');
+  options.classList.toggle('active');
   optionsBtn.classList.toggle('active');
   optionsBtn.textContent = optionsBtn.classList.contains('active') ? "Hide Options" : "Show options";
 }
@@ -20,6 +21,12 @@ function randomPositions() {
   }
 }
 
+function randomColors() {
+  for (let n of nodes) {
+    n.getColor();
+  }
+}
+
 function resetPositions() {
   for (let n of nodes) {
     if (n.animation) return;
@@ -27,13 +34,12 @@ function resetPositions() {
   }
 }
 
-const infoCoords = document.getElementById('infoCoords');
+const infoCoords = document.getElementById('info-coords');
 function getNodesCoords() {
   let infoText = '';
-  for (let n of nodes) {
-    let coords = n.getCoords().map(Math.round);
-    infoText += `  ${n.id}  x: ${coords[0]} y: ${coords[1]} |`;
-    console.log(infoText);
-  }
+  if (targetNodeObj) {
+    let coords = targetNodeObj.getCoords().map(Math.round);
+    infoText = ` ${targetNodeObj.id}  x: ${coords[0]} y: ${coords[1]} `;
+  } else infoText = "click on a node to get coordinates";
   infoCoords.textContent = infoText;
 }
