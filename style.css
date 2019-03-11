@@ -67,8 +67,8 @@ button {
   position: absolute;
   left: 500px;
   top: 400px;
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   z-index: 10;
   cursor: pointer;
   padding: 0;

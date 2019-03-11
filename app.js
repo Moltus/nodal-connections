@@ -34,9 +34,9 @@ const node3 = new Node("node3", [14, 394], texts[2]);
 const node4 = new Node("node4", [290, 613], texts[3]);
 const node5 = new Node("node5", [831, 408], texts[4]);
 const node6 = new Node("node6", [831, 151], texts[5]);
-const badge1 = new Badge("badge1", [400, 100]);
-const badge2 = new Badge("badge2", [550, 100]);
-const badge3 = new Badge("badge3", [700, 100]);
+const badge1 = new Badge("badge1", [400, 100], "BADGE 1 ---- BADGE 1 ----");
+const badge2 = new Badge("badge2", [550, 100], "BADGE 2 ---- BADGE 2 ----");
+const badge3 = new Badge("badge3", [700, 100], "BADGE 3 ---- BADGE 3 ----");
 
 var nodes = [node1, node2, node3, node4, node5, node6, badge1, badge2, badge3];
 

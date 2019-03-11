@@ -5,7 +5,7 @@ class Node {
     this.id = id;
     // this.domElement = document.getElementById(this.id);
     this.text = text || this.id;
-    this.domElement = this.createElement();
+    this.domElement = this.createElements();
     // console.log("domElement is : ", this.domElement);
     this.initPos = initialPosition;
     this.color = color || this.getColor();
@@ -17,13 +17,13 @@ class Node {
     this.animation = false;
   }
 
-  createElement() {
+  createElements() {
     let container = document.createElement('div');
-    container.classList += 'node-container';
+    container.className = 'node-container';
     document.getElementById("wrapper").appendChild(container);
 
     let nodeElement = document.createElement('div');
-    nodeElement.classList += 'node';
+    nodeElement.className = 'node';
     nodeElement.id = this.id;
     console.log("text is : ", this.text);
     for (let i of this.text) {
@@ -36,7 +36,7 @@ class Node {
     container.appendChild(nodeElement);
 
     let connections = document.createElement('div');
-    connections.classList += 'connections';
+    connections.className = 'connections';
     connections.id = this.id + '__connections';
     container.appendChild(connections);
 
@@ -328,22 +328,48 @@ class Badge extends Node {
     return color;
   }
 
-  // createElement() {
-  //   let container = document.createElement('div');
-  //   container.classList += 'node-container';
-  //   document.getElementById("wrapper").appendChild(container);
+  createElements() {
+  
+    let container = document.createElement('div');
+    container.className = 'node-container';
+    document.getElementById("wrapper").appendChild(container);
 
-    
+    // create svg and all subelements
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttributeNS(null, "viewBow", "0 0 100 100");
+    svg.setAttributeNS(null, "class", "badge");
+    svg.id = this.id;
+    container.appendChild(svg);
 
-  //   container.appendChild(nodeElement);
+    let bg = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    bg.setAttributeNS(null, "class", "badge__bg");
+    bg.id = this.id + "__bg";
+    let d = "M50,0.9C22.9,0.9,0.9,22.9,0.9,50S22.8,99.1,50,99.1S99.1,77.2,99.1,50S77.1,0.9,50,0.9z M50,67.1c-9.5,0-17.1-7.7-17.1-17.1S40.5,32.9,50,32.9S67.1,40.5,67.1,50S59.5,67.1,50,67.1z";
+    bg.setAttributeNS(null, "d", d);
+    svg.appendChild(bg);
+    let path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    path.setAttributeNS(null, "class", "badge__path");
+    path.id = this.id + "__path";
+    d = "M71.2,32.2c9.8,11.8,8.2,29.3-3.5,39.1s-29.3,8.2-39.1-3.5s-8.2-29.3,3.5-39.1 S61.5,20.4,71.2,32.2z";
+    path.setAttributeNS(null, "d", d);
+    svg.appendChild(path);
+    let svgTxt = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+    svgTxt.setAttributeNS(null, "class", "badge__text");
+    svg.appendChild(svgTxt);
+    let txtPath = document.createElementNS("http://www.w3.org/2000/svg", 'textPath');
+    let pathXlink = '#' + this.id + '__path';
+    txtPath.setAttributeNS('http://www.w3.org/1999/xlink', 'href', pathXlink);
+    txtPath.textContent = this.text;
+    svgTxt.appendChild(txtPath);
 
-  //   let connections = document.createElement('div');
-  //   connections.classList += 'connections';
-  //   connections.id = this.id + '__connections';
-  //   container.appendChild(connections);
 
-  //   return nodeElement;
-  // }
+    let connections = document.createElement('div');
+    connections.className = 'connections';
+    connections.id = this.id + '__connections';
+    container.appendChild(connections);
+
+    return svg;
+  }  
 }
 
 
