@@ -353,7 +353,7 @@ class Badge extends Node {
     let path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     path.setAttributeNS(null, "class", "badge__path");
     path.id = this.id + "__path";
-    d = "M63.1,29.8c8.4,10.1,7,25.1-3,33.5s-25.1,7-33.5-3s-7-25.1,3-33.5S54.8,19.7,63.1,29.8z";
+    d = "M63.9,29.1c8.7,10.5,7.3,26.2-3.1,34.9s-26.2,7.3-34.9-3.1S18.6,34.7,29,26 S55.3,18.6,63.9,29.1z";
     path.setAttributeNS(null, "d", d);
     svg.appendChild(path);
 
