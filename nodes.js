@@ -26,6 +26,7 @@ class Node {
     nodeElement.className = 'node';
     nodeElement.id = this.id;
     console.log("text is : ", this.text);
+    
     for (let i of this.text) {
       let para = document.createElement("p");
       let txt = document.createTextNode(i);
@@ -35,6 +36,7 @@ class Node {
 
     container.appendChild(nodeElement);
 
+    // connections div to append plugs, links, arrows with linkchild
     let connections = document.createElement('div');
     connections.className = 'connections';
     connections.id = this.id + '__connections';
@@ -44,9 +46,9 @@ class Node {
   }
 
   getColor() {
-    let color = 'rgb(' + (Math.floor(Math.random() * 50) + 50)
-      + ',' + (Math.floor(Math.random() * 50) + 50)
-      + ',' + (Math.floor(Math.random() * 50) + 50) + ')';
+    let color = 'rgb(' + (Math.floor(Math.random() * 30) + 50)
+      + ',' + (Math.floor(Math.random() * 30) + 50)
+      + ',' + (Math.floor(Math.random() * 30) + 50) + ')';
     this.domElement.style.backgroundColor = color;
     return color;
   }
@@ -84,9 +86,7 @@ class Node {
     // this temporarily disables drag and drop movement
     // default transition is 1sec
     this.animation = true;
-
     this.domElement.style.transition = 'all ' + time + 'ms';
-
     this.domElement.style.left = x + suffix;
     if (suffix === 'vw') suffix = 'vh';
     this.domElement.style.top = y + suffix;
@@ -320,9 +320,9 @@ class Badge extends Node {
   }
 
   getColor() {
-    let color = 'rgb(' + (Math.floor(Math.random() * 100) + 1)
-      + ',' + (Math.floor(Math.random() * 100) + 1)
-      + ',' + (Math.floor(Math.random() * 100) + 1) + ')';
+    let color = 'rgb(' + (Math.floor(Math.random() * 30) + 50)
+      + ',' + (Math.floor(Math.random() * 30) + 50)
+      + ',' + (Math.floor(Math.random() * 30) + 50) + ')';
     let bg = document.getElementById(this.id + '__bg');
     bg.style.fill = color;
     return color;
@@ -334,25 +334,30 @@ class Badge extends Node {
     container.className = 'node-container';
     document.getElementById("wrapper").appendChild(container);
 
-    // create svg and all subelements
+    // create svg and all subelements using .createElementNS
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttributeNS(null, "viewBow", "0 0 100 100");
+    svg.setAttributeNS(null, "viewBow", "0 0 90 90");
     svg.setAttributeNS(null, "class", "badge");
     svg.id = this.id;
     container.appendChild(svg);
 
+    // background shape
     let bg = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     bg.setAttributeNS(null, "class", "badge__bg");
     bg.id = this.id + "__bg";
-    let d = "M50,0.9C22.9,0.9,0.9,22.9,0.9,50S22.8,99.1,50,99.1S99.1,77.2,99.1,50S77.1,0.9,50,0.9z M50,67.1c-9.5,0-17.1-7.7-17.1-17.1S40.5,32.9,50,32.9S67.1,40.5,67.1,50S59.5,67.1,50,67.1z";
+    let d = "M45,1C20.7,1,1,20.7,1,45s19.6,44,44,44s44-19.6,44-44S69.3,1,45,1z M45,60.3 c-8.5,0-15.3-6.9-15.3-15.3S36.5,29.7,45,29.7S60.3,36.5,60.3,45S53.5,60.3,45,60.3z";
     bg.setAttributeNS(null, "d", d);
     svg.appendChild(bg);
+
+    // text path shape
     let path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     path.setAttributeNS(null, "class", "badge__path");
     path.id = this.id + "__path";
-    d = "M71.2,32.2c9.8,11.8,8.2,29.3-3.5,39.1s-29.3,8.2-39.1-3.5s-8.2-29.3,3.5-39.1 S61.5,20.4,71.2,32.2z";
+    d = "M63.1,29.8c8.4,10.1,7,25.1-3,33.5s-25.1,7-33.5-3s-7-25.1,3-33.5S54.8,19.7,63.1,29.8z";
     path.setAttributeNS(null, "d", d);
     svg.appendChild(path);
+
+    // text from constructor arg
     let svgTxt = document.createElementNS("http://www.w3.org/2000/svg", 'text');
     svgTxt.setAttributeNS(null, "class", "badge__text");
     svg.appendChild(svgTxt);
@@ -362,7 +367,7 @@ class Badge extends Node {
     txtPath.textContent = this.text;
     svgTxt.appendChild(txtPath);
 
-
+    // connections div to append plugs, links, arrows with linkchild
     let connections = document.createElement('div');
     connections.className = 'connections';
     connections.id = this.id + '__connections';
